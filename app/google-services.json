@@ -1,0 +1,149 @@
+{
+  "project_info": {
+    "project_number": "552513072431",
+    "firebase_url": "https://text-413b1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "text-413b1",
+    "storage_bucket": "text-413b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552513072431:android:46f6641e7a6974d21485da",
+        "android_client_info": {
+          "package_name": "com.android.documentsharing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552513072431-37ptn7gf0a6nmkomas9jh5kj0lkp6u6n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.documentsharing",
+            "certificate_hash": "2cf5bbba5cda11a626f43aa45f2b369ba308015a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM0N76aJHu6b_DvEmILmfxF9_CAnLKfH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552513072431:android:db01aa3c90ec91301485da",
+        "android_client_info": {
+          "package_name": "com.android.languagetranslator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM0N76aJHu6b_DvEmILmfxF9_CAnLKfH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552513072431:android:d1de4cb303db61d41485da",
+        "android_client_info": {
+          "package_name": "com.android.messenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552513072431-75aop2ud56bodcb46752nn24je8552j8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.messenger",
+            "certificate_hash": "2cf5bbba5cda11a626f43aa45f2b369ba308015a"
+          }
+        },
+        {
+          "client_id": "552513072431-q1d5k1ljnafqqp54c1j5uourhpnr10uc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.messenger",
+            "certificate_hash": "51dc9bcc72335ce0b4fe4c794d904afb5314641d"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM0N76aJHu6b_DvEmILmfxF9_CAnLKfH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552513072431:android:deb73face1cbbf071485da",
+        "android_client_info": {
+          "package_name": "com.android.video_calling"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM0N76aJHu6b_DvEmILmfxF9_CAnLKfH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552513072431:android:0f038fe2980592121485da",
+        "android_client_info": {
+          "package_name": "com.text.text_recognition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552513072431-ddovn25s2l4oke62nkaupe0hdejfvgbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.text.text_recognition",
+            "certificate_hash": "a5566f4908cc6380c9294dabe69edf0488aa2d79"
+          }
+        },
+        {
+          "client_id": "552513072431-r38ve3vh3m0kl358dalhl498dq5ba9nm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.text.text_recognition",
+            "certificate_hash": "5e64352fa59ffc25ce8c059089b0e222fcd6b241"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM0N76aJHu6b_DvEmILmfxF9_CAnLKfH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
