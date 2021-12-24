@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="Share App"
+    android:id="@+id/share_app"
+    tools:ignore="HardcodedText" />
+    <item android:title="Settings"
+        android:id="@+id/user_setting"
+        tools:ignore="HardcodedText" />
+    <item android:title="Contact Us"
+        android:id="@+id/contact_us"
+        tools:ignore="HardcodedText" />
+    <item android:title="Log Out"
+        android:id="@+id/log_out"
+        tools:ignore="HardcodedText" />
+    <item android:title="Delete Account"
+        android:id="@+id/delete_account"
+        tools:ignore="HardcodedText" />
+</menu>
