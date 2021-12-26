@@ -8,11 +8,12 @@
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/ic_baseline_call_24.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/inputbg.xml" value="0.19322916666666667" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/save_profile_btnbg.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_contact_us.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_home_screen.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_main.xml" value="0.16822916666666668" />
-        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_save_profile.xml" value="0.16822916666666668" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_save_profile.xml" value="0.22" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_splash.xml" value="0.22" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_verify_number.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/delete_account.xml" value="0.33" />

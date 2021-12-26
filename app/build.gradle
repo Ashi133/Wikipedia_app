@@ -20,6 +20,9 @@ android {
     }
     buildTypes {
         release {
+            dexOptions{
+                incremental true
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -47,4 +50,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.hbb20:ccp:2.5.4'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation "com.android.support:multidex:1.0.3"
+    implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

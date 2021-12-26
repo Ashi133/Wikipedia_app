@@ -112,18 +112,15 @@ public class Login extends AppCompatActivity {
                                     super.onCodeSent(s, forceResendingToken);
                                     progressBar.setVisibility(View.INVISIBLE);
                                     Toast.makeText(Login.this, "Code sent successfully!", Toast.LENGTH_SHORT).show();
-                                    new Handler().postDelayed(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            startActivity(
-                                                    new Intent(Login.this,verifyNumber.class)
-                                                            .putExtra("number",number)
-                                                            .putExtra("code",countryCode)
-                                                            .putExtra("finalNo",finalNumber)
-                                                            .putExtra("otp",s)
-                                            );
-                                            finish();
-                                        }
+                                    new Handler().postDelayed(() -> {
+                                        startActivity(
+                                                new Intent(Login.this,verifyNumber.class)
+                                                        .putExtra("number",number)
+                                                        .putExtra("code",countryCode)
+                                                        .putExtra("finalNo",finalNumber)
+                                                        .putExtra("otp",s)
+                                        );
+                                        finish();
                                     },800);
                                 }
                             })

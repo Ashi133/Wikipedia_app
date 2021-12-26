@@ -74,7 +74,7 @@ public class verifyNumber extends AppCompatActivity {
                                     FirebaseDatabase
                                             .getInstance()
                                             .getReference()
-                                            .child("Uid")
+                                            .child("document")
                                             .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                                             .setValue(FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnSuccessListener(unused -> new Handler().postDelayed(() -> {
                                         startActivity(new Intent(verifyNumber.this, saveProfile.class)

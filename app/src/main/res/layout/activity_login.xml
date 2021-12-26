@@ -47,7 +47,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="#009688"
+        android:backgroundTint="#0140FA"
         android:elevation="20dp"
         android:padding="5dp"
         app:cardCornerRadius="10dp"
