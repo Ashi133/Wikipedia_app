@@ -46,4 +46,5 @@ dependencies {
     //extra dependency
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.hbb20:ccp:2.5.4'
 }

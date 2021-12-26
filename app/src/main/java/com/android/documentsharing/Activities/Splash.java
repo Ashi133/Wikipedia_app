@@ -24,7 +24,7 @@ public class Splash extends AppCompatActivity {
         tw.animateText("Developed By : \n Ashi And Rahmatullah");
 
         new Handler().postDelayed(() -> {
-            Intent intent=new Intent(Splash.this,HomeScreen.class);
+            Intent intent=new Intent(Splash.this,Login.class);
             startActivity(intent);
             finish();
         }, Timer);

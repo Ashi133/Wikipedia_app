@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android.documentsharing">
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/sharing"
@@ -12,9 +14,18 @@
         android:theme="@style/Theme.DocumentSharing"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".Activities.Contact_Us"
-            android:label="Contact Us"
+            android:name=".Activities.saveProfile"
             android:exported="false" />
+        <activity
+            android:name=".Activities.verifyNumber"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Login"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.Contact_Us"
+            android:exported="false"
+            android:label="Contact Us" />
         <activity
             android:name=".Activities.HomeScreen"
             android:exported="false" />
