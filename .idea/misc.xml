@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/bg.xml" value="0.19322916666666667" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/bg1.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/btnbg.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.19322916666666667" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/drawable/ic_baseline_call_24.xml" value="0.19322916666666667" />
@@ -15,9 +17,11 @@
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_main.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_save_profile.xml" value="0.22" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_splash.xml" value="0.22" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_users.xml" value="0.2" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_verify_number.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/delete_account.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/empty_document.xml" value="0.18" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/empty_user.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/fragment_downloaded.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/fragment_received.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/fragment_shared.xml" value="0.18702953097857555" />
@@ -25,6 +29,7 @@
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/log_out.xml" value="0.5" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/logout.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/shared_document_item.xml" value="0.16822916666666668" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/user_row.xml" value="0.48" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/menu/bottom_menu.xml" value="0.1" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/menu/option_menu.xml" value="0.25" />
       </map>

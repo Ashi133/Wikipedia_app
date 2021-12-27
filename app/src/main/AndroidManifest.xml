@@ -4,7 +4,7 @@
     package="com.android.documentsharing">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/sharing"
@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DocumentSharing"
         tools:ignore="AllowBackup">
+        <activity
+            android:name=".Activities.Users"
+            android:exported="false" />
         <activity
             android:name=".Activities.saveProfile"
             android:exported="false" />

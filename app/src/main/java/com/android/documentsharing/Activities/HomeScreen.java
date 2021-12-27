@@ -5,8 +5,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +19,7 @@ import com.android.documentsharing.R;
 import com.android.documentsharing.databinding.DeleteAccountBinding;
 import com.android.documentsharing.databinding.LogoutBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 @SuppressWarnings ("ALL")
 public class HomeScreen extends AppCompatActivity {
@@ -114,9 +118,27 @@ public class HomeScreen extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //log out code goes here...
-
-
+                        ProgressDialog progressDialog=new ProgressDialog(HomeScreen.this);
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        progressDialog.setMessage("Logging out,Please wait...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
                         dialog.dismiss();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                FirebaseAuth.getInstance().signOut();
+                                SharedPreferences sharedPreferences=getSharedPreferences("state",MODE_PRIVATE);
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                editor.putBoolean("isSaved",false);
+                                editor.apply();
+                                progressDialog.dismiss();
+                                Intent intent1=new Intent(HomeScreen.this,Login.class);
+                                intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent1);
+                            }
+                        }, 800);
                     }
                 });
                 break;
@@ -142,6 +164,9 @@ public class HomeScreen extends AppCompatActivity {
                         dialog1.dismiss();
                     }
                 });
+                break;
+            case R.id.users:
+                startActivity(new Intent(this,Users.class));
                 break;
         }
         return true;
