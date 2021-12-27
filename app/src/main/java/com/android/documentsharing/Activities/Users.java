@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import com.android.documentsharing.Adapter.UsersAdapter;
 import com.android.documentsharing.UpdateOnlineStatus;
@@ -62,7 +63,7 @@ public class Users extends AppCompatActivity {
         }else {
             binding.usersRv.showShimmerAdapter();
             reference.child("Document_user").addValueEventListener(new ValueEventListener() {
-                @SuppressLint ("NotifyDataSetChanged")
+                @SuppressLint ({ "NotifyDataSetChanged", "SetTextI18n" })
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
@@ -76,6 +77,16 @@ public class Users extends AppCompatActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
+                        if (arrayList.size() == 0){
+                            binding.usersCount.setVisibility(View.GONE);
+                        }else {
+                            binding.usersCount.setVisibility(View.VISIBLE);
+                            if (arrayList.size() < 10){
+                                binding.usersCount.setText("0"+arrayList.size());
+                            }else{
+                                binding.usersCount.setText(String.valueOf(arrayList.size()));
+                            }
+                        }
                         binding.usersRv.hideShimmerAdapter();
                     }
                 }

@@ -15,8 +15,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userProfile"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:src="@drawable/user"
@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="vertical"
             android:id="@+id/linear1"
             android:layout_toStartOf="@id/user_in_contact"
@@ -33,10 +33,10 @@
             android:layout_toEndOf="@id/userProfile">
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:id="@+id/user_name"
                 android:textColor="#2196F3"
-                android:textSize="16sp"
+                android:textSize="22sp"
                 android:gravity="center_vertical|start"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -46,10 +46,10 @@
                 tools:ignore="HardcodedText" />
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:id="@+id/user_about"
                 android:textColor="#2196F3"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:gravity="center_vertical|start"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/user_in_contact"
             android:textColor="#2196F3"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:gravity="center_vertical|start"
             android:singleLine="true"
             android:ellipsize="marquee"

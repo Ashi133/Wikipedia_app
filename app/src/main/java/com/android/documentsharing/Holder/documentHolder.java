@@ -1,7 +1,7 @@
 package com.android.documentsharing.Holder;
 
 public class documentHolder {
-    String name,extension,size,date,time,uid,ownerName,nodeKey;
+    String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName;
 
     public documentHolder() {
 
@@ -16,6 +16,14 @@ public class documentHolder {
         this.uid = uid;
         this.ownerName = ownerName;
         this.nodeKey = nodeKey;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 
     public String getName() {

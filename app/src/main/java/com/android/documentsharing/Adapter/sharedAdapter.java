@@ -28,13 +28,11 @@ public class sharedAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Empty view;
         if (viewType==empty){
-            view=new Empty(LayoutInflater.from(context).inflate(R.layout.empty_document,parent,false));
+            return new Empty(LayoutInflater.from(context).inflate(R.layout.empty_document,parent,false));
         }else {
-            view=new Empty(LayoutInflater.from(context).inflate(R.layout.shared_document_item,parent,false));
+            return new NotEmpty(LayoutInflater.from(context).inflate(R.layout.shared_document_item,parent,false));
         }
-        return view;
     }
 
     @Override
@@ -44,23 +42,33 @@ public class sharedAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (count == 1)
+        if (count == -1){
             return empty;
-        else
+        }
+        else{
             return not_empty;
+        }
     }
 
     @Override
     public int getItemCount() {
         if (arrayList.size() == 0){
-            count=1;
+            count=-1;
+            return count+2;
         }else {
             count=arrayList.size();
+            return count;
         }
-        return count;
     }
     public class Empty extends RecyclerView.ViewHolder{
         public Empty(@NonNull View itemView) {
+            super(itemView);
+        }
+
+    }
+    public class NotEmpty extends RecyclerView.ViewHolder{
+
+        public NotEmpty(@NonNull View itemView) {
             super(itemView);
         }
 

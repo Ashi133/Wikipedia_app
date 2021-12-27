@@ -24,7 +24,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
     ArrayList<String> numbers;
     Context context;
     String name,about,url;
-    int count=1;
+    int count;
     private static final int empty=0;
     private static final int not_empty=1;
     public UsersAdapter(Context context,ArrayList<Users> arrayList) {
@@ -72,7 +72,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemViewType(int position) {
-        if (count == 1){
+        if (count == -1){
             return empty;
         }else {
             return not_empty;
@@ -98,11 +98,12 @@ public class UsersAdapter extends RecyclerView.Adapter{
     @Override
     public int getItemCount() {
         if (arrayList.size() == 0){
-            count=1;
+            count=-1;
+            return count+2;
         }else {
             count=arrayList.size();
+            return count;
         }
-        return count;
     }
     public class Empty extends RecyclerView.ViewHolder{
 

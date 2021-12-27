@@ -1,6 +1,13 @@
 package com.android.documentsharing.Fragments;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +24,7 @@ import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.android.documentsharing.databinding.FragmentSharedBinding;
+import com.android.documentsharing.getUri;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
@@ -44,8 +52,19 @@ public class Shared extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.hideShimmerAdapter();
+        view.findViewById(R.id.addNew).setOnClickListener(view1 -> {
+            Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("*/*");
+            launcher.launch(intent);
+        });
         return view;
     }
+    ActivityResultLauncher<Intent> launcher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Intent data=result.getData();
+        if (data != null) {
+            Uri uri=data.getData();
+        }
+    });
     private void loadData() {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
