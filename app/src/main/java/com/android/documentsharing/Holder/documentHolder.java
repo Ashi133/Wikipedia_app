@@ -1,7 +1,7 @@
 package com.android.documentsharing.Holder;
 
 public class documentHolder {
-    String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName;
+    String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName,url;
     boolean access;
 
     public documentHolder() {
@@ -25,6 +25,14 @@ public class documentHolder {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isAccess() {

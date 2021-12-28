@@ -33,7 +33,7 @@ public class Users extends AppCompatActivity {
     DatabaseReference reference;
     UsersAdapter adapter;
     ArrayList<com.android.documentsharing.Holder.Users> arrayList;
-    String path;
+    String uri,path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +47,10 @@ public class Users extends AppCompatActivity {
         binding.usersRv.setLayoutManager(new LinearLayoutManager(this));
         binding.usersRv.setAdapter(adapter);
         auth=FirebaseAuth.getInstance();
-        path=getIntent().getStringExtra("uri");
-        if (path != null){
-            adapter.notifyPath(path);
+        uri=getIntent().getStringExtra("uri");
+        path=getIntent().getStringExtra("path");
+        if (uri != null && path != null){
+            adapter.notifyPath(uri,path);
         }
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
         loadUsers();//loading users.
@@ -64,8 +65,9 @@ public class Users extends AppCompatActivity {
     private void loadUsers() {
         if (!UpdateOnlineStatus.check_network_state(this)){
             Toast.makeText(this, "Internet connection error!", Toast.LENGTH_SHORT).show();
-        }if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.READ_CONTACTS },22);
+        }if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+        && ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.READ_CONTACTS ,Manifest.permission.READ_EXTERNAL_STORAGE},22);
         }else {
             binding.usersRv.showShimmerAdapter();
             reference.child("Document_user").addValueEventListener(new ValueEventListener() {
