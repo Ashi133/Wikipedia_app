@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.documentsharing.Holder.Users;
 import com.android.documentsharing.Holder.documentHolder;
@@ -32,12 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressWarnings("ALL")
@@ -103,7 +100,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                             String extension=name.split("\\.")[1];
                             String time= UpdateOnlineStatus.getCurrentDateTime();
                             String date= formatDate(UpdateOnlineStatus.getCurrentDate());
-                            String size= getSize(uri.toString());
+                            String size= getSize(path);
                             String receiver=arrayList.get(position).getName();
                             database.child("Document_user").child(auth.getCurrentUser().getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -141,10 +138,11 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                                 database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                     @Override
                                                                     public void onSuccess(Void unused) {
+                                                                        holder1.setReceiverName(owner);
                                                                         database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
                                                                             public void onSuccess(Void unused) {
-
+                                                                                ((AppCompatActivity)context).finish();
                                                                             }
                                                                         }).addOnFailureListener(new OnFailureListener() {
                                                                             @Override
@@ -193,20 +191,25 @@ public class UsersAdapter extends RecyclerView.Adapter{
         }
 
     }
-    private String getSize(String uri) {
+    private String getSize(String pth) {
         String app_size;
-        long size = new File(uri).length();
+        long size = new File(pth).length();
+        DecimalFormat df=new DecimalFormat("0.00");
+        Float sizeKb=1024.0f;
+        Float sizeMb=sizeKb*sizeKb;
+        Float sizeGb=sizeMb*sizeMb;
+        Float sizeTb=sizeGb*sizeGb;
         if (size<1024){
-            app_size=String.format(context.getString(R.string.app_size_b),(double)size);
+            app_size=df.format(size)+"B";
         }
-        else if (size<Math.pow(1024,2)){
-            app_size=String.format(context.getString(R.string.app_size_kib),(double)size/1024);
+        else if (size<=sizeMb){
+            app_size=df.format(size/sizeKb)+"KB";
         }
-        else if (size<Math.pow(1024,3)){
-            app_size=String.format(context.getString(R.string.app_size_mib),(double)size/Math.pow(1024,2));
+        else if (size<sizeGb){
+            app_size=df.format(size/sizeMb)+"MB";
         }
         else{
-            app_size=String.format(context.getString(R.string.app_size_gib),(double)size/Math.pow(1023,3));
+            app_size=df.format(size/sizeGb)+"GB";
         }
         return app_size;
     }

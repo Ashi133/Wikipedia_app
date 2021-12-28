@@ -22,7 +22,6 @@ public class documentHolder {
     public String getReceiverName() {
         return receiverName;
     }
-
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
     }

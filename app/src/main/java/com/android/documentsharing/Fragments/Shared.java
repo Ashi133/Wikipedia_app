@@ -55,7 +55,6 @@ public class Shared extends Fragment {
         auth=FirebaseAuth.getInstance();
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing").child("Documents")
         .child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).child("shared");
-        loadData();
         refreshLayout.setOnRefreshListener(() -> {
             loadData();
             refreshLayout.setRefreshing(false);
@@ -65,6 +64,8 @@ public class Shared extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
+        recyclerView.showShimmerAdapter();
+        loadData();
         view.findViewById(R.id.addNew).setOnClickListener(view1 -> {
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
@@ -91,6 +92,7 @@ public class Shared extends Fragment {
                 @SuppressLint ("NotifyDataSetChanged")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    arrayList.clear();
                     if (snapshot.exists()){
                         for (DataSnapshot snapshot1:snapshot.getChildren()){
                             documentHolder holder=snapshot1.getValue(documentHolder.class);
@@ -98,6 +100,7 @@ public class Shared extends Fragment {
                         }
                     }
                     adapter.notifyDataSetChanged();
+                    recyclerView.hideShimmerAdapter();
                 }
 
                 @Override

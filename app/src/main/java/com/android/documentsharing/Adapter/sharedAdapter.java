@@ -1,6 +1,7 @@
 package com.android.documentsharing.Adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
     private int count;
     private String dname,dsize,dtime,ddate,dreceiver;
     boolean daccess;
-
+    int icons[]={R.drawable.pdf};
     public sharedAdapter(Context context,ArrayList<documentHolder> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -54,9 +56,13 @@ public class sharedAdapter extends RecyclerView.Adapter {
             ddate=arrayList.get(position).getDate();
             dreceiver=arrayList.get(position).getReceiverName();
             daccess=arrayList.get(position).isAccess();
+            container.name.setSelected(true);
+            container.property.setSelected(true);
+            container.receiver.setSelected(true);
             container.name.setText(dname);
             container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
-            container.receiver.setText(dreceiver);
+            container.receiver.setText(String.format("Shared with %s",dreceiver));
+
             container.option.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -102,6 +108,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
             property=itemView.findViewById(R.id.document_property);
             receiver=itemView.findViewById(R.id.document_receiver);
             option=itemView.findViewById(R.id.document_option);
+            name=itemView.findViewById(R.id.document_name);
         }
     }
 }
