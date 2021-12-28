@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.documentsharing.Activities.Users;
 import com.android.documentsharing.Adapter.sharedAdapter;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
@@ -63,6 +64,10 @@ public class Shared extends Fragment {
         Intent data=result.getData();
         if (data != null) {
             Uri uri=data.getData();
+            Intent intent=new Intent(requireActivity(), Users.class);
+            String path=getUri.getRealPath(requireActivity(),uri);
+            intent.putExtra("uri",path);
+            startActivity(intent);
         }
     });
     private void loadData() {

@@ -10,6 +10,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class Users extends AppCompatActivity {
     DatabaseReference reference;
     UsersAdapter adapter;
     ArrayList<com.android.documentsharing.Holder.Users> arrayList;
+    String path;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,10 @@ public class Users extends AppCompatActivity {
         binding.usersRv.setLayoutManager(new LinearLayoutManager(this));
         binding.usersRv.setAdapter(adapter);
         auth=FirebaseAuth.getInstance();
+        path=getIntent().getStringExtra("uri");
+        if (path != null){
+            adapter.notifyPath(path);
+        }
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
         loadUsers();//loading users.
         binding.usersSwipe.setOnRefreshListener(() -> {

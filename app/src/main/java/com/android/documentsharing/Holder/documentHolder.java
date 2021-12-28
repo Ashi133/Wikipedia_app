@@ -2,6 +2,7 @@ package com.android.documentsharing.Holder;
 
 public class documentHolder {
     String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName;
+    boolean access;
 
     public documentHolder() {
 
@@ -24,6 +25,14 @@ public class documentHolder {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public boolean isAccess() {
+        return access;
+    }
+
+    public void setAccess(boolean access) {
+        this.access = access;
     }
 
     public String getName() {

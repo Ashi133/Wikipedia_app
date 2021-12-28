@@ -23,7 +23,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
     ArrayList<Users> arrayList;
     ArrayList<String> numbers;
     Context context;
-    String name,about,url;
+    String name,about,url,uri;
     int count;
     private static final int empty=0;
     private static final int not_empty=1;
@@ -66,6 +66,14 @@ public class UsersAdapter extends RecyclerView.Adapter{
             }catch (Exception e){
                 Toast.makeText(context, "Users Adapter:Error ="+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
+            container.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (uri != null){
+
+                    }
+                }
+            });
         }
 
     }
@@ -105,6 +113,11 @@ public class UsersAdapter extends RecyclerView.Adapter{
             return count;
         }
     }
+
+    public void notifyPath(String path) {
+        uri=path;
+    }
+
     public class Empty extends RecyclerView.ViewHolder{
 
         public Empty(@NonNull View itemView) {

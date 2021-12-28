@@ -4,13 +4,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
+import com.android.documentsharing.UpdateOnlineStatus;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 @SuppressWarnings("ALL")
 public class sharedAdapter extends RecyclerView.Adapter {
@@ -19,6 +26,8 @@ public class sharedAdapter extends RecyclerView.Adapter {
     private static final int empty=0;
     private static final int not_empty=1;
     private int count;
+    private String dname,dsize,dtime,ddate,dreceiver;
+    boolean daccess;
 
     public sharedAdapter(Context context,ArrayList<documentHolder> arrayList) {
         this.arrayList = arrayList;
@@ -37,7 +46,24 @@ public class sharedAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        if (holder.getClass()== NotEmpty.class){
+            NotEmpty container=(NotEmpty) holder;
+            dname=arrayList.get(position).getName();
+            dsize=arrayList.get(position).getSize();
+            dtime=arrayList.get(position).getTime();
+            ddate=arrayList.get(position).getDate();
+            dreceiver=arrayList.get(position).getReceiverName();
+            daccess=arrayList.get(position).isAccess();
+            container.name.setText(dname);
+            container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
+            container.receiver.setText(dreceiver);
+            container.option.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Date = "+ UpdateOnlineStatus.getCurrentDate(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
@@ -67,10 +93,15 @@ public class sharedAdapter extends RecyclerView.Adapter {
 
     }
     public class NotEmpty extends RecyclerView.ViewHolder{
-
+        CircleImageView icon;
+        TextView name,property,receiver;
+        ImageView option;
         public NotEmpty(@NonNull View itemView) {
             super(itemView);
+            icon=itemView.findViewById(R.id.document_icon);
+            property=itemView.findViewById(R.id.document_property);
+            receiver=itemView.findViewById(R.id.document_receiver);
+            option=itemView.findViewById(R.id.document_option);
         }
-
     }
 }
