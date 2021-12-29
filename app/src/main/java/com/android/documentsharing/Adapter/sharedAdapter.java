@@ -1,6 +1,7 @@
 package com.android.documentsharing.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.documentsharing.Activities.preview;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
@@ -60,6 +63,19 @@ public class sharedAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "Date = "+ UpdateOnlineStatus.getCurrentDate(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            container.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String name=arrayList.get(position).getName();
+                    String extension=arrayList.get(position).getExtension();
+                    String url=arrayList.get(position).getUrl();
+                    Intent intent=new Intent(context, preview.class);
+                    intent.putExtra("name",name);
+                    intent.putExtra("url",url);
+                    intent.putExtra("ext",extension);
+                    context.startActivity(intent);
                 }
             });
         }
