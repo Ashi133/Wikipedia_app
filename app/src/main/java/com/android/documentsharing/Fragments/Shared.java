@@ -3,18 +3,14 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +21,6 @@ import com.android.documentsharing.Adapter.sharedAdapter;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
-import com.android.documentsharing.databinding.FragmentSharedBinding;
 import com.android.documentsharing.getUri;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,10 +50,6 @@ public class Shared extends Fragment {
         auth=FirebaseAuth.getInstance();
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing").child("Documents")
         .child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).child("shared");
-        refreshLayout.setOnRefreshListener(() -> {
-            loadData();
-            refreshLayout.setRefreshing(false);
-        });
         arrayList=new ArrayList<>();
         adapter=new sharedAdapter(requireActivity(),arrayList);
         recyclerView.setHasFixedSize(true);
@@ -66,6 +57,11 @@ public class Shared extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.showShimmerAdapter();
         loadData();
+        refreshLayout.setOnRefreshListener(() -> {
+            recyclerView.showShimmerAdapter();
+            loadData();
+            refreshLayout.setRefreshing(false);
+        });
         view.findViewById(R.id.addNew).setOnClickListener(view1 -> {
             Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("*/*");
@@ -100,7 +96,7 @@ public class Shared extends Fragment {
                         }
                     }
                     adapter.notifyDataSetChanged();
-                    recyclerView.hideShimmerAdapter();
+                    new Handler().postDelayed(() -> recyclerView.hideShimmerAdapter(), 1000);
                 }
 
                 @Override

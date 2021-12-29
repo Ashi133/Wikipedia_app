@@ -202,7 +202,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
         if (size<1024){
             app_size=df.format(size)+"B";
         }
-        else if (size<=sizeMb){
+        else if (size<sizeMb){
             app_size=df.format(size/sizeKb)+"KB";
         }
         else if (size<sizeGb){

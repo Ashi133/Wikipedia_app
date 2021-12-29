@@ -25,6 +25,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:gravity="start"
+        android:id="@+id/document_info"
         android:padding="5dp"
         android:text="Nothing is Shared,Please check internet connection or pull down to refresh!"
         android:textColor="@color/teal_700"
