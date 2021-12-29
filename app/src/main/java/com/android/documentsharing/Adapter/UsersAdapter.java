@@ -102,6 +102,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                             String date= formatDate(UpdateOnlineStatus.getCurrentDate());
                             String size= getSize(path);
                             String receiver=arrayList.get(position).getName();
+                            String receiver_id=arrayList.get(position).getuId();
                             database.child("Document_user").child(auth.getCurrentUser().getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -128,7 +129,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                                     if (taskSnapshot.getTask().isSuccessful()){
                                                         dialog.dismiss();
-                                                        documentHolder holder1=new documentHolder(name,extension,size,date,time,auth.getCurrentUser().getUid(),owner,node);
+                                                        documentHolder holder1=new documentHolder(name,extension,size,date,time,receiver_id,owner,node);
                                                         holder1.setReceiverName(receiver);
                                                         holder1.setAccess(true);
                                                         reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -138,7 +139,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                                 database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                     @Override
                                                                     public void onSuccess(Void unused) {
-                                                                        holder1.setReceiverName(owner);
+                                                                        holder1.setReceiverName(receiver);
                                                                         database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
                                                                             public void onSuccess(Void unused) {

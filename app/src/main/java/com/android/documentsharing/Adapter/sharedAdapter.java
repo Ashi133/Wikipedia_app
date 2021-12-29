@@ -3,12 +3,14 @@ package com.android.documentsharing.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.documentsharing.Activities.preview;
@@ -16,6 +18,13 @@ import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
@@ -27,6 +36,8 @@ public class sharedAdapter extends RecyclerView.Adapter {
     private int count;
     private String dname,dsize,dtime,ddate,dreceiver;
     boolean daccess;
+    DatabaseReference reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
+    FirebaseAuth auth=FirebaseAuth.getInstance();
     public sharedAdapter(Context context,ArrayList<documentHolder> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -62,7 +73,64 @@ public class sharedAdapter extends RecyclerView.Adapter {
             container.option.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Date = "+ UpdateOnlineStatus.getCurrentDate(), Toast.LENGTH_SHORT).show();
+                    PopupMenu popupMenu=new PopupMenu(context,container.option);
+                    popupMenu.getMenuInflater().inflate(R.menu.shared_menu,popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            MenuItem item1=popupMenu.getMenu().findItem(R.id.denied_access);
+                            DatabaseReference ref=
+                            reference.child("Documents").child(auth.getCurrentUser().getUid()).child("shared")
+                                    .child(arrayList.get(position).getNodeKey()).child("access");
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        boolean access=snapshot.getValue(boolean.class);
+                                        if (access){
+                                            item1.setTitle("Block Access");
+                                        }else {
+                                            item1.setTitle("Allow Access");
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                            switch (item.getItemId()){
+                                case R.id.share_document:
+
+                                    break;
+                                case R.id.denied_access:
+                                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()){
+                                                boolean access=snapshot.getValue(boolean.class);
+                                                reference.child("Documents").child(auth.getCurrentUser().getUid()).child("shared")
+                                                        .child(arrayList.get(position).getNodeKey()).child("access").setValue(!access);
+                                                reference.child("Documents").child(arrayList.get(position).getUid()).child("received")
+                                                        .child(arrayList.get(position).getNodeKey()).child("access").setValue(!access);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                    break;
+                                case R.id.delete_document:
+
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
             container.itemView.setOnClickListener(new View.OnClickListener() {

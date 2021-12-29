@@ -1,6 +1,8 @@
 package com.android.documentsharing.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,25 @@ public class receivedAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "Date = "+ UpdateOnlineStatus.getCurrentDate(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            container.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    daccess=arrayList.get(position).isAccess();
+                    if (!daccess){
+                        AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                        builder.setCancelable(false);
+                        builder.setTitle("Access Denied");
+                        builder.setMessage("Access is denied by "+arrayList.get(position).getOwnerName());
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        builder.show();
+                    }
                 }
             });
         }else if (holder.getClass() == Empty.class){
