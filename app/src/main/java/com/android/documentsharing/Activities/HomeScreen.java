@@ -8,8 +8,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,6 +84,10 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.option_menu,menu);
+        MenuItem item=menu.findItem(R.id.delete_account);
+        SpannableString string=new SpannableString("Delete Account");
+        string.setSpan(new ForegroundColorSpan(Color.RED),0,string.length(),0);
+        item.setTitle(string);
         return true;
     }
 
@@ -159,8 +166,7 @@ public class HomeScreen extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //log out code goes here...
-
-
+                        DeleteAccount();
                         dialog1.dismiss();
                     }
                 });
@@ -170,6 +176,10 @@ public class HomeScreen extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private void DeleteAccount() {
+
     }
 
 }

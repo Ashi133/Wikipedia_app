@@ -3,6 +3,8 @@ package com.android.documentsharing.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.documentsharing.Activities.preview;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
@@ -26,7 +38,10 @@ public class receivedAdapter extends RecyclerView.Adapter {
     private static final int not_empty=1;
     private int count;
     private String dname,dsize,dtime,ddate,dreceiver;
-    boolean daccess;
+    boolean daccess,New;
+    DatabaseReference database= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
+    StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
+    FirebaseAuth auth=FirebaseAuth.getInstance();
     public receivedAdapter(Context context,ArrayList<documentHolder> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -52,6 +67,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
             ddate=arrayList.get(position).getDate();
             dreceiver=arrayList.get(position).getOwnerName();
             daccess=arrayList.get(position).isAccess();
+            New = arrayList.get(position).isNew();
             container.name.setSelected(true);
             container.property.setSelected(true);
             container.receiver.setSelected(true);
@@ -62,6 +78,11 @@ public class receivedAdapter extends RecyclerView.Adapter {
                 container.relativeLayout.setBackgroundResource(R.drawable.bg);
             }else {
                 container.relativeLayout.setBackgroundResource(R.drawable.bg2);
+            }
+            if (New){
+                container.New.setVisibility(View.VISIBLE);
+            }else {
+                container.New.setVisibility(View.GONE);
             }
             int res=IconsHolder.getIcon(arrayList.get(position).getExtension());
             try {
@@ -92,6 +113,30 @@ public class receivedAdapter extends RecyclerView.Adapter {
                             }
                         });
                         builder.show();
+                    }else{
+                        String name=arrayList.get(position).getName();
+                        String extension=arrayList.get(position).getExtension();
+                        String url=arrayList.get(position).getUrl();
+                        Intent intent=new Intent(context, preview.class);
+                        intent.putExtra("name",name);
+                        intent.putExtra("url",url);
+                        intent.putExtra("ext",extension);
+                        if (arrayList.get(position).isNew()){
+                            database.child("Documents").child(auth.getCurrentUser().getUid()).child("received").child(arrayList.get(position).getNodeKey())
+                                    .child("new").setValue(false).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    context.startActivity(intent);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("received adapter : set new error : ",e.getLocalizedMessage());
+                                }
+                            });
+                        }else {
+                            context.startActivity(intent);
+                        }
                     }
                 }
             });
@@ -131,7 +176,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
     }
     public class NotEmpty extends RecyclerView.ViewHolder{
         ImageView icon;
-        TextView name,property,receiver;
+        TextView name,property,receiver,New;
         ImageView option;
         RelativeLayout relativeLayout;
         public NotEmpty(@NonNull View itemView) {
@@ -142,6 +187,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
             option=itemView.findViewById(R.id.document_option);
             name=itemView.findViewById(R.id.document_name);
             relativeLayout=itemView.findViewById(R.id.outline_rel);
+            New=itemView.findViewById(R.id.newDoc);
         }
     }
 }

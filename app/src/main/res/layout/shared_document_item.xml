@@ -85,5 +85,18 @@
             android:layout_marginEnd="5dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_baseline_more_vert_24" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New"
+            android:id="@+id/newDoc"
+            android:textSize="12sp"
+            android:textColor="#2196F3"
+            android:visibility="gone"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:textStyle="italic"
+            android:layout_marginEnd="5dp"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
 </RelativeLayout>

@@ -134,6 +134,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                         documentHolder holder1=new documentHolder(name,extension,size,date,time,receiver_id,owner,node);
                                                         holder1.setReceiverName(receiver);
                                                         holder1.setAccess(true);
+                                                        holder1.setNew(false);
                                                         reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                             @Override
                                                             public void onSuccess(Uri uri4) {
@@ -142,6 +143,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                                     @Override
                                                                     public void onSuccess(Void unused) {
                                                                         holder1.setReceiverName(receiver);
+                                                                        holder1.setNew(true);
                                                                         database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
                                                                             public void onSuccess(Void unused) {
@@ -204,11 +206,12 @@ public class UsersAdapter extends RecyclerView.Adapter{
                             String rName=arrayList.get(position).getName();
                             String id=arrayList.get(position).getuId();
                             String node=documentHolder.getNodeKey();
-                            if (rName != documentHolder.getReceiverName()){
+                            if (!documentHolder.getReceiverName().contains(rName)){
                                 documentHolder.setReceiverName(documentHolder.getReceiverName()+":"+rName);
                             }else {
-                                documentHolder.setReceiverName(rName);
+                                documentHolder.setReceiverName(documentHolder.getReceiverName());
                             }
+                            documentHolder.setNew(true);
                             database.child("Documents").child(id).child("received").child(node).setValue(documentHolder).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {

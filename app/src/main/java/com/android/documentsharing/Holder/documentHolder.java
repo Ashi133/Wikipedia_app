@@ -2,11 +2,11 @@ package com.android.documentsharing.Holder;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
+@SuppressWarnings("ALL")
 public class documentHolder implements Parcelable {
     String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName,url;
     boolean access;
-
+    boolean New=false;
     public documentHolder() {
 
     }
@@ -47,6 +47,18 @@ public class documentHolder implements Parcelable {
             return new documentHolder[ size ];
         }
     };
+
+    public boolean isNew() {
+        return New;
+    }
+
+    public void setNew(boolean aNew) {
+        New = aNew;
+    }
+
+    public static Creator<documentHolder> getCREATOR() {
+        return CREATOR;
+    }
 
     public String getReceiverName() {
         return receiverName;
@@ -153,6 +165,7 @@ public class documentHolder implements Parcelable {
         parcel.writeString(receiverName);
         parcel.writeString(url);
         parcel.writeByte((byte) ( access ? 1 : 0 ));
+        parcel.writeByte((byte)(New ? 1:0));
     }
 
 }
