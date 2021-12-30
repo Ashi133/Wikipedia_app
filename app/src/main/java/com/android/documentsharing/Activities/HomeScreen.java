@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,22 +14,49 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.documentsharing.Adapter.ViewPagerAdapter;
+import com.android.documentsharing.HttpTrustManager;
 import com.android.documentsharing.R;
 import com.android.documentsharing.databinding.DeleteAccountBinding;
 import com.android.documentsharing.databinding.LogoutBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings ("ALL")
 public class HomeScreen extends AppCompatActivity {
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
     BottomNavigationView navigationView;
+    ValueEventListener listener;
+    DatabaseReference reference;
+    FirebaseAuth auth;
+    DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
+    StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
     @Override
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
@@ -179,7 +207,126 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void DeleteAccount() {
+        ProgressDialog dialog=new ProgressDialog(HomeScreen.this);
+        dialog.setProgressStyle(0);
+        dialog.setMessage("sending otp for verification...");
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (reference != null && listener != null){
+                    reference.removeEventListener(listener);
+                }
+                dialogInterface.dismiss();
+            }
+        });
+        dialog.show();
+        if (reference != null && listener != null){
+            reference.addListenerForSingleValueEvent(listener);
+        }
+        reference=FirebaseDatabase.getInstance().getReference().child("DocumentSharing")
+                .child("Document_user").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("finalNo");
+        listener=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    String number=snapshot.getValue(String.class);
+                    if (number != null){
+                        HttpTrustManager.allowAllSSL();
+                        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
+                                .setPhoneNumber(number)       // Phone number to verify
+                                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                .setActivity(HomeScreen.this)                 // Activity (for callback binding)
+                                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                                    @Override
+                                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                                        Toast.makeText(HomeScreen.this, "Verified", Toast.LENGTH_SHORT).show();
+                                    }
+                                    @Override
+                                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                                        dialog.dismiss();
+                                        Toast.makeText(HomeScreen.this, "Login : Failed due to : -"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
 
+                                    @Override
+                                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                        super.onCodeSent(s, forceResendingToken);
+                                        dialog.dismiss();
+                                        Toast.makeText(HomeScreen.this, "Code sent successfully!", Toast.LENGTH_SHORT).show();
+                                        new Handler().postDelayed(() -> {
+                                           View view= LayoutInflater.from(HomeScreen.this).inflate(R.layout.get_otp,null);
+                                           AlertDialog dialog1=new AlertDialog.Builder(HomeScreen.this)
+                                                   .setCancelable(false)
+                                                   .setView(view).create();
+                                           dialog1.show();
+                                            Button cancel,verify;
+                                            cancel=view.findViewById(R.id.Cancel);
+                                            verify=view.findViewById(R.id.Verify);
+                                            EditText editText=view.findViewById(R.id.OTPView);
+                                            cancel.setOnClickListener(v->dialog1.dismiss());
+                                            verify.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    String otp=editText.getText().toString();
+                                                    if (otp.isEmpty()){
+                                                        editText.setError("Enter OTP");
+                                                        editText.requestFocus();
+                                                    }else if (otp.length() < 6){
+                                                        editText.setError("Enter valid OTP");
+                                                        editText.requestFocus();
+                                                    }else{
+                                                        dialog1.dismiss();
+                                                        ProgressDialog dialog2=new ProgressDialog(HomeScreen.this);
+                                                        dialog2.setProgressStyle(0);
+                                                        dialog2.setMessage("Verifying....");
+                                                        dialog2.setCancelable(false);
+                                                        dialog2.show();
+                                                        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(s,otp);
+                                                        auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                if (task.isSuccessful()){
+                                                                    dialog2.dismiss();
+                                                                    new Handler().postDelayed(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            ProgressDialog dialog3=new ProgressDialog(HomeScreen.this);
+                                                                            dialog3.setProgressStyle(0);
+                                                                            dialog3.setMessage("Deleting Account just wait few moment....");
+                                                                            dialog3.setCancelable(false);
+                                                                            dialog3.show();
+
+                                                                        }
+                                                                    }, 1000);
+                                                                }else {
+                                                                    dialog2.dismiss();
+                                                                    Toast.makeText(HomeScreen.this, "Home screen : verification not completed due to :- "+task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                dialog2.dismiss();
+                                                                Toast.makeText(HomeScreen.this, "Home screen : verification failed due to :- "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        },1000);
+                                    }
+                                })
+                                .build();
+                        PhoneAuthProvider.verifyPhoneNumber(options);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
     }
 
 }
