@@ -17,7 +17,6 @@ import com.android.documentsharing.Activities.preview;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
-import com.android.documentsharing.UpdateOnlineStatus;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +68,13 @@ public class sharedAdapter extends RecyclerView.Adapter {
             container.name.setText(dname);
             container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
             container.receiver.setText(String.format("Shared with %s",dreceiver));
-            container.icon.setImageResource(IconsHolder.getIcon(arrayList.get(position).getExtension()));
+            int res=IconsHolder.getIcon(arrayList.get(position).getExtension());
+            try {
+                container.icon.setImageResource(res);
+            }catch (Exception e){
+                Toast.makeText(context, "Icon not found for file extension : "+arrayList.get(position).getExtension(), Toast.LENGTH_SHORT).show();
+                container.icon.setImageResource(R.drawable.user);
+            }
             container.option.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -11,7 +11,7 @@ public class IconsHolder {
     }
 
     public static void initialize() {
-        icons=new Hashtable<String, Integer>();
+        icons= new Hashtable<>();
         icons.put("pdf",R.drawable.pdf);
         icons.put("apk",R.drawable.android);
         icons.put("c",R.drawable.c);
@@ -33,6 +33,14 @@ public class IconsHolder {
         icons.put("wmv",R.drawable.video);
         icons.put("flv",R.drawable.video);
         icons.put("avi",R.drawable.video);
+        icons.put("kt",R.drawable.kotlin);
+        icons.put("html",R.drawable.html);
+        icons.put("css",R.drawable.css);
+        icons.put("js",R.drawable.javascript);
+        icons.put("rar",R.drawable.rar);
+        icons.put("vbs",R.drawable.vb);
+        icons.put("xml",R.drawable.xml);
+        icons.put("zip",R.drawable.zip);
     }
 
 }

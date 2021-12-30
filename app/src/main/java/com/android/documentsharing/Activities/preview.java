@@ -56,7 +56,14 @@ public class preview extends AppCompatActivity {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setDomStorageEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                //super.onPageFinished(view, url);
+                webView.setVisibility(View.VISIBLE);
+                binding.lottieAnimation.setVisibility(View.GONE);
+            }
+        });
         webView.setWebChromeClient(new WebChromeClient());
         webView.setVisibility(View.VISIBLE);
     }
