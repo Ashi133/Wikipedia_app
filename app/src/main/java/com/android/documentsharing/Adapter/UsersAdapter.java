@@ -43,6 +43,8 @@ public class UsersAdapter extends RecyclerView.Adapter{
     ArrayList<String> numbers;
     Context context;
     String name,about,url,uri,path;
+    documentHolder documentHolder;
+    boolean fromAdapter=false;
     int count;
     private static final int empty=0;
     private static final int not_empty=1;
@@ -186,6 +188,39 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         }catch (Exception e){
                             Log.e("User adapter:error=",e.getLocalizedMessage());
                         }
+                    }else if (fromAdapter){
+                        try {
+                            AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                            builder.setCancelable(false);
+                            builder.setMessage("Sharing Please wait...");
+                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            AlertDialog dialog=builder.create();
+                            dialog.show();
+                            documentHolder.setReceiverName(arrayList.get(position).getName());
+                            String id=arrayList.get(position).getuId();
+                            String node=documentHolder.getNodeKey();
+                            database.child("Documents").child(id).child("received").child(node).setValue(documentHolder).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    dialog.dismiss();
+                                    ((AppCompatActivity)context).finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            fromAdapter=false;
+                        }catch (Exception e){
+                            Log.e("Error user adapter = ",e.getLocalizedMessage());
+                        }
                     }
                 }
             });
@@ -263,6 +298,11 @@ public class UsersAdapter extends RecyclerView.Adapter{
     public void notifyPath(String uri2,String path2) {
         uri=uri2;
         path=path2;
+    }
+
+    public void sendTo(documentHolder holder) {
+        documentHolder=holder;
+        fromAdapter=true;
     }
 
     public class Empty extends RecyclerView.ViewHolder{

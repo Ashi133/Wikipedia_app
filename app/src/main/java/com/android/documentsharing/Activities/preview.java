@@ -34,13 +34,17 @@ public class preview extends AppCompatActivity {
     private void load(String url, String extension) {
         if (extension.equals("pdf") ||
                 extension.equals("docx") ||
-                extension.equals("xlsx") ||
-                extension.equals("jpg") ||
-        extension.equals("png")){
+                extension.equals("xlsx")){
             String url1= Uri.encode(url);
             String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
             webView.loadUrl(finalUrl);
-        }else {
+        }else if (extension.equals("jpg") ||
+                extension.equals("png")){
+            String url1= Uri.encode(url);
+            String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
+            webView.loadUrl(finalUrl);
+        }
+        else {
             webView.loadUrl("https://www.google.com");
         }
     }
@@ -56,6 +60,7 @@ public class preview extends AppCompatActivity {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setLoadsImagesAutomatically(true);
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -65,7 +70,6 @@ public class preview extends AppCompatActivity {
             }
         });
         webView.setWebChromeClient(new WebChromeClient());
-        webView.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -5,16 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import com.android.documentsharing.Adapter.UsersAdapter;
+import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.android.documentsharing.databinding.ActivityUsersBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,8 +47,14 @@ public class Users extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         uri=getIntent().getStringExtra("uri");
         path=getIntent().getStringExtra("path");
+        boolean fromAdapter=getIntent().getBooleanExtra("fromAdapter",false);
+        documentHolder holder=getIntent().getParcelableExtra("shareTo");
         if (uri != null && path != null){
             adapter.notifyPath(uri,path);
+        }else if (fromAdapter){
+            if (holder != null){
+                adapter.sendTo(holder);
+            }
         }
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
         loadUsers();//loading users.
@@ -104,6 +108,18 @@ public class Users extends AppCompatActivity {
 
                 }
             });
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 22){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                loadUsers();
+            }else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

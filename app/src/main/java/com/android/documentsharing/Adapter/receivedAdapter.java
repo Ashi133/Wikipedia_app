@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -49,7 +50,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
             dsize=arrayList.get(position).getSize();
             dtime=arrayList.get(position).getTime();
             ddate=arrayList.get(position).getDate();
-            dreceiver=arrayList.get(position).getReceiverName();
+            dreceiver=arrayList.get(position).getOwnerName();
             daccess=arrayList.get(position).isAccess();
             container.name.setSelected(true);
             container.property.setSelected(true);
@@ -57,7 +58,18 @@ public class receivedAdapter extends RecyclerView.Adapter {
             container.name.setText(dname);
             container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
             container.receiver.setText(String.format("Received from %s",dreceiver));
-            container.icon.setImageResource(IconsHolder.getIcon(arrayList.get(position).getExtension()));
+            if (daccess){
+                container.relativeLayout.setBackgroundResource(R.drawable.bg);
+            }else {
+                container.relativeLayout.setBackgroundResource(R.drawable.bg2);
+            }
+            int res=IconsHolder.getIcon(arrayList.get(position).getExtension());
+            try {
+                container.icon.setImageResource(res);
+            }catch (Exception e){
+                Toast.makeText(context, "Icon not found for file extension : "+arrayList.get(position).getExtension(), Toast.LENGTH_SHORT).show();
+                container.icon.setImageResource(R.drawable.user);
+            }
             container.option.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -121,6 +133,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
         ImageView icon;
         TextView name,property,receiver;
         ImageView option;
+        RelativeLayout relativeLayout;
         public NotEmpty(@NonNull View itemView) {
             super(itemView);
             icon=itemView.findViewById(R.id.document_icon);
@@ -128,6 +141,7 @@ public class receivedAdapter extends RecyclerView.Adapter {
             receiver=itemView.findViewById(R.id.document_receiver);
             option=itemView.findViewById(R.id.document_option);
             name=itemView.findViewById(R.id.document_name);
+            relativeLayout=itemView.findViewById(R.id.outline_rel);
         }
     }
 }

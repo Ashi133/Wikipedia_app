@@ -1,6 +1,9 @@
 package com.android.documentsharing.Holder;
 
-public class documentHolder {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class documentHolder implements Parcelable {
     String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName,url;
     boolean access;
 
@@ -18,6 +21,32 @@ public class documentHolder {
         this.ownerName = ownerName;
         this.nodeKey = nodeKey;
     }
+
+    protected documentHolder(Parcel in) {
+        name = in.readString();
+        extension = in.readString();
+        size = in.readString();
+        date = in.readString();
+        time = in.readString();
+        uid = in.readString();
+        ownerName = in.readString();
+        nodeKey = in.readString();
+        receiverName = in.readString();
+        url = in.readString();
+        access = in.readByte() != 0;
+    }
+
+    public static final Creator<documentHolder> CREATOR = new Creator<documentHolder>() {
+        @Override
+        public documentHolder createFromParcel(Parcel in) {
+            return new documentHolder(in);
+        }
+
+        @Override
+        public documentHolder[] newArray(int size) {
+            return new documentHolder[ size ];
+        }
+    };
 
     public String getReceiverName() {
         return receiverName;
@@ -104,6 +133,26 @@ public class documentHolder {
 
     public void setNodeKey(String nodeKey) {
         this.nodeKey = nodeKey;
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(extension);
+        parcel.writeString(size);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeString(uid);
+        parcel.writeString(ownerName);
+        parcel.writeString(nodeKey);
+        parcel.writeString(receiverName);
+        parcel.writeString(url);
+        parcel.writeByte((byte) ( access ? 1 : 0 ));
     }
 
 }

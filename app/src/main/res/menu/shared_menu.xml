@@ -2,7 +2,10 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/share_document"
-        android:title="share"
+        android:title="Share"
+        tools:ignore="HardcodedText" />
+    <item android:id="@+id/download_document"
+        android:title="Download"
         tools:ignore="HardcodedText" />
     <item android:id="@+id/denied_access"
         android:title="Block Access"
