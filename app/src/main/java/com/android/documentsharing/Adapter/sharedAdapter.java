@@ -81,7 +81,12 @@ public class sharedAdapter extends RecyclerView.Adapter {
             container.receiver.setSelected(true);
             container.name.setText(dname);
             container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
-            container.receiver.setText(String.format("Shared with %s",dreceiver));
+            if (dreceiver.contains(":")){
+                String array[]=dreceiver.split(":");
+                container.receiver.setText(String.format("Shared with %s + %d others",array[0],array.length-1));
+            }else {
+                container.receiver.setText(String.format("Shared with %s",dreceiver));
+            }
             if (daccess){
                 container.relativeLayout.setBackgroundResource(R.drawable.bg);
             }else {

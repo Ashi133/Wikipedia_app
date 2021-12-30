@@ -201,9 +201,14 @@ public class UsersAdapter extends RecyclerView.Adapter{
                             });
                             AlertDialog dialog=builder.create();
                             dialog.show();
-                            documentHolder.setReceiverName(arrayList.get(position).getName());
+                            String rName=arrayList.get(position).getName();
                             String id=arrayList.get(position).getuId();
                             String node=documentHolder.getNodeKey();
+                            if (rName != documentHolder.getReceiverName()){
+                                documentHolder.setReceiverName(documentHolder.getReceiverName()+":"+rName);
+                            }else {
+                                documentHolder.setReceiverName(rName);
+                            }
                             database.child("Documents").child(id).child("received").child(node).setValue(documentHolder).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
