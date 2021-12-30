@@ -61,6 +61,7 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
         setContentView(R.layout.activity_home_screen);
+        auth=FirebaseAuth.getInstance();
         viewPager=findViewById(R.id.viewPager);
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
@@ -209,7 +210,8 @@ public class HomeScreen extends AppCompatActivity {
     private void DeleteAccount() {
         ProgressDialog dialog=new ProgressDialog(HomeScreen.this);
         dialog.setProgressStyle(0);
-        dialog.setMessage("sending otp for verification...");
+        dialog.setMessage("sending OTP for verification...");
+        dialog.setCancelable(false);
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -219,12 +221,8 @@ public class HomeScreen extends AppCompatActivity {
                 dialogInterface.dismiss();
             }
         });
-        dialog.show();
-        if (reference != null && listener != null){
-            reference.addListenerForSingleValueEvent(listener);
-        }
         reference=FirebaseDatabase.getInstance().getReference().child("DocumentSharing")
-                .child("Document_user").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("Document_user").child(auth.getCurrentUser().getUid())
                 .child("finalNo");
         listener=new ValueEventListener() {
             @Override
@@ -287,6 +285,7 @@ public class HomeScreen extends AppCompatActivity {
                                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                                 if (task.isSuccessful()){
                                                                     dialog2.dismiss();
+                                                                    Toast.makeText(HomeScreen.this, "verification successful!", Toast.LENGTH_SHORT).show();
                                                                     new Handler().postDelayed(new Runnable() {
                                                                         @Override
                                                                         public void run() {
@@ -327,6 +326,10 @@ public class HomeScreen extends AppCompatActivity {
 
             }
         };
+        dialog.show();
+        if (reference != null && listener != null){
+            reference.addListenerForSingleValueEvent(listener);
+        }
     }
 
 }
