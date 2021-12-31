@@ -99,7 +99,8 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         try{
                             String array[]=path.split("/");
                             String name=array[array.length-1];
-                            String extension=name.split("\\.")[1];
+                            String arr[]=name.split("\\.");
+                            String extension=arr[arr.length-1];
                             String time= UpdateOnlineStatus.getCurrentDateTime();
                             String date= formatDate(UpdateOnlineStatus.getCurrentDate());
                             String size= getSize(path);

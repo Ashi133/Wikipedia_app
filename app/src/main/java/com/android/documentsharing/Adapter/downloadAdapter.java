@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class downloadAdapter extends RecyclerView.Adapter {
         }
     }
 
-    @SuppressLint ("SetTextI18n")
+    @SuppressLint ({ "SetTextI18n", "NonConstantResourceId" })
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder.getClass() == Empty.class){
@@ -75,6 +76,22 @@ public class downloadAdapter extends RecyclerView.Adapter {
                 String ext=array[array.length-1];
                 int res= IconsHolder.getIcon(ext);
                 container.icon.setImageResource(res);
+                container.option.setOnClickListener(view -> {
+                    PopupMenu popupMenu=new PopupMenu(context,container.option);
+                    popupMenu.getMenuInflater().inflate(R.menu.downloaded_menu,popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(menuItem -> {
+                        switch (menuItem.getItemId()){
+                            case R.id.Share:
+
+                                break;
+                            case R.id.Delete:
+
+                                break;
+                        }
+                        return true;
+                    });
+                    popupMenu.show();
+                });
             }catch (Exception e){
                 Toast.makeText(context, "Download Adapter : error = "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -130,6 +147,13 @@ public class downloadAdapter extends RecyclerView.Adapter {
         else
             return not_empty;
     }
+
+    @SuppressLint ("NotifyDataSetChanged")
+    public void updateList(ArrayList<File> temp) {
+        arrayList=temp;
+        notifyDataSetChanged();
+    }
+
     public static class Empty extends RecyclerView.ViewHolder{
         TextView label;
         public Empty(@NonNull View itemView) {

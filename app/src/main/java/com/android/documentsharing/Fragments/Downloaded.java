@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.documentsharing.Adapter.downloadAdapter;
+import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import java.io.File;
@@ -100,9 +101,17 @@ public class Downloaded extends Fragment {
     }
 
     public void search(String text) {
+        ArrayList<File> temp=new ArrayList<>();
         if (text.isEmpty()){
-
+            temp.addAll(arrayList);
+        }else {
+            for (File holder:arrayList){
+                if (holder.getName().toLowerCase().contains(text)){
+                    temp.add(holder);
+                }
+            }
         }
+        adapter.updateList(temp);
     }
 
 }

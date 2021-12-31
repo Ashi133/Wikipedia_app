@@ -292,6 +292,12 @@ public class sharedAdapter extends RecyclerView.Adapter {
             return count;
         }
     }
+
+    public void updateList(ArrayList<documentHolder> temp) {
+        arrayList=temp;
+        notifyDataSetChanged();
+    }
+
     public class Empty extends RecyclerView.ViewHolder{
         public Empty(@NonNull View itemView) {
             super(itemView);

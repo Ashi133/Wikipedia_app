@@ -107,7 +107,17 @@ public class Shared extends Fragment {
     }
 
     public void search(String text) {
-
+        ArrayList<documentHolder> temp=new ArrayList<>();
+        if (text.isEmpty()){
+            temp.addAll(arrayList);
+        }else {
+            for (documentHolder holder:arrayList){
+                if (holder.getName().toLowerCase().contains(text)){
+                    temp.add(holder);
+                }
+            }
+        }
+        adapter.updateList(temp);
     }
 
 }

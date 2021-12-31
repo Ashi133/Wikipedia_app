@@ -60,7 +60,6 @@ public class Received extends Fragment {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(requireActivity(), "Hello", Toast.LENGTH_SHORT).show();
             recyclerView.showShimmerAdapter();
             reference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint ("NotifyDataSetChanged")
@@ -94,7 +93,17 @@ public class Received extends Fragment {
     }
 
     public void search(String text) {
-
+        ArrayList<documentHolder> temp=new ArrayList<>();
+        if (text.isEmpty()){
+            temp.addAll(arrayList);
+        }else {
+            for (documentHolder holder:arrayList){
+                if (holder.getName().toLowerCase().contains(text)){
+                    temp.add(holder);
+                }
+            }
+        }
+        adapter.updateList(temp);
     }
 
 }

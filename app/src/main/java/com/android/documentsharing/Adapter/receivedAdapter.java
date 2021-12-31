@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,6 +142,31 @@ public class receivedAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+            container.option.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu=new PopupMenu(context,container.option);
+                    popupMenu.getMenuInflater().inflate(R.menu.received_menu,popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            switch (menuItem.getItemId()){
+                                case R.id.share:
+
+                                    break;
+                                case R.id.download:
+
+                                    break;
+                                case R.id.delete:
+
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         }else if (holder.getClass() == Empty.class){
             Empty hold=(Empty) holder;
             hold.info.setText("Nothing is received ! please check internet connection or pull down to refresh list!");
@@ -166,6 +193,12 @@ public class receivedAdapter extends RecyclerView.Adapter {
             return count;
         }
     }
+
+    public void updateList(ArrayList<documentHolder> temp) {
+        arrayList=temp;
+        notifyDataSetChanged();
+    }
+
     public class Empty extends RecyclerView.ViewHolder{
         TextView info;
         public Empty(@NonNull View itemView) {
