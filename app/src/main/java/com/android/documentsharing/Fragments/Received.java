@@ -59,7 +59,6 @@ public class Received extends Fragment {
         });
         return view;
     }
-
     private void load() {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();

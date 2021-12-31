@@ -56,7 +56,6 @@ public class Shared extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.showShimmerAdapter();
-        loadData();
         refreshLayout.setOnRefreshListener(() -> {
             recyclerView.showShimmerAdapter();
             loadData();
@@ -105,6 +104,12 @@ public class Shared extends Fragment {
                 }
             });
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadData();
     }
 
 }

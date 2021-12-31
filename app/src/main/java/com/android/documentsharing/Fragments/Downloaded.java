@@ -33,10 +33,10 @@ public class Downloaded extends Fragment {
     SwipeRefreshLayout refreshLayout;
     ProgressDialog dialog;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v;
-        v = inflater.inflate(R.layout.fragment_downloaded, container, false);
+        v = layoutInflater.inflate(R.layout.fragment_downloaded, viewGroup, false);
         recyclerView=v.findViewById(R.id.download_rv);
         refreshLayout=v.findViewById(R.id.swipeRefresh2);
         arrayList=new ArrayList<>();
@@ -44,7 +44,6 @@ public class Downloaded extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
-        loadData();
         refreshLayout.setOnRefreshListener(() -> {
             loadData();
             refreshLayout.setRefreshing(false);
@@ -52,6 +51,13 @@ public class Downloaded extends Fragment {
         return v;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed()) {
+            loadData();
+        }
+    }
     private void loadData() {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -67,7 +73,6 @@ public class Downloaded extends Fragment {
             findFiles();
         }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
