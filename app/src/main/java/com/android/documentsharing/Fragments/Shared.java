@@ -55,9 +55,8 @@ public class Shared extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
-        recyclerView.showShimmerAdapter();
+        loadData();
         refreshLayout.setOnRefreshListener(() -> {
-            recyclerView.showShimmerAdapter();
             loadData();
             refreshLayout.setRefreshing(false);
         });
@@ -83,6 +82,7 @@ public class Shared extends Fragment {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
         }else{
+            recyclerView.showShimmerAdapter();
             reference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint ("NotifyDataSetChanged")
                 @Override
@@ -105,11 +105,4 @@ public class Shared extends Fragment {
             });
         }
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        loadData();
-    }
-
 }

@@ -50,10 +50,7 @@ public class Received extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
-        recyclerView.showShimmerAdapter();
-        load();
         refreshLayout.setOnRefreshListener(() -> {
-            recyclerView.showShimmerAdapter();
             load();
             refreshLayout.setRefreshing(false);
         });
@@ -63,6 +60,8 @@ public class Received extends Fragment {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
         }else{
+            Toast.makeText(requireActivity(), "Hello", Toast.LENGTH_SHORT).show();
+            recyclerView.showShimmerAdapter();
             reference.addValueEventListener(new ValueEventListener() {
                 @SuppressLint ("NotifyDataSetChanged")
                 @Override
@@ -83,6 +82,14 @@ public class Received extends Fragment {
 
                 }
             });
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && isResumed()){
+            load();
         }
     }
 

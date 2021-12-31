@@ -1,10 +1,8 @@
 package com.android.documentsharing.Fragments;
 
 import static androidx.core.util.ObjectsCompat.requireNonNull;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.os.Environment;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -31,7 +28,6 @@ public class Downloaded extends Fragment {
     ArrayList<File> arrayList;
     ShimmerRecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
-    ProgressDialog dialog;
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -63,13 +59,8 @@ public class Downloaded extends Fragment {
         && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE },23);
         }else {
-            //recyclerView.showShimmerAdapter();
+            recyclerView.showShimmerAdapter();
             //loading downloaded file here.
-            dialog=new ProgressDialog(requireActivity());
-            dialog.setCancelable(false);
-            dialog.setProgressStyle(0);
-            dialog.setMessage("Loading files wait a moment...");
-            dialog.show();
             findFiles();
         }
     }
@@ -104,7 +95,7 @@ public class Downloaded extends Fragment {
         adapter.notifyDataSetChanged();
         new Handler().postDelayed(() -> {
             Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            recyclerView.hideShimmerAdapter();
         }, 1000);
     }
 }
