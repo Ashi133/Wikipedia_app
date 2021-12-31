@@ -51,16 +51,16 @@ public class Received extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.showShimmerAdapter();
-        loadData();
+        load();
         refreshLayout.setOnRefreshListener(() -> {
             recyclerView.showShimmerAdapter();
-            loadData();
+            load();
             refreshLayout.setRefreshing(false);
         });
         return view;
     }
 
-    private void loadData() {
+    private void load() {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){
             Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
         }else{

@@ -239,10 +239,10 @@ public class UsersAdapter extends RecyclerView.Adapter{
         String app_size;
         long size = new File(pth).length();
         DecimalFormat df=new DecimalFormat("0.00");
-        Float sizeKb=1024.0f;
-        Float sizeMb=sizeKb*sizeKb;
-        Float sizeGb=sizeMb*sizeMb;
-        Float sizeTb=sizeGb*sizeGb;
+        float sizeKb=1024.0f;
+        float sizeMb=sizeKb*sizeKb;
+        float sizeGb=sizeMb*sizeMb;
+        float sizeTb=sizeGb*sizeGb;
         if (size<1024){
             app_size=df.format(size)+"B";
         }
@@ -252,8 +252,10 @@ public class UsersAdapter extends RecyclerView.Adapter{
         else if (size<sizeGb){
             app_size=df.format(size/sizeMb)+"MB";
         }
-        else{
+        else if (size<sizeTb){
             app_size=df.format(size/sizeGb)+"GB";
+        }else {
+            app_size= df.format(size/sizeTb)+"TB";
         }
         return app_size;
     }
