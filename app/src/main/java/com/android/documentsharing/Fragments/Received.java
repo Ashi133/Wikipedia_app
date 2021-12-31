@@ -93,4 +93,8 @@ public class Received extends Fragment {
         }
     }
 
+    public void search(String text) {
+
+    }
+
 }

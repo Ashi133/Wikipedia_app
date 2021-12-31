@@ -3,6 +3,7 @@ package com.android.documentsharing.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.documentsharing.Adapter.ViewPagerAdapter;
+import com.android.documentsharing.Fragments.Downloaded;
+import com.android.documentsharing.Fragments.Received;
+import com.android.documentsharing.Fragments.Shared;
 import com.android.documentsharing.HttpTrustManager;
 import com.android.documentsharing.R;
 import com.android.documentsharing.databinding.DeleteAccountBinding;
@@ -57,6 +62,8 @@ public class HomeScreen extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
     StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
+    private int count=0;
+
     @Override
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
@@ -113,11 +120,42 @@ public class HomeScreen extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.option_menu,menu);
-        MenuItem item=menu.findItem(R.id.delete_account);
+        MenuItem item1=menu.findItem(R.id.delete_account);
         SpannableString string=new SpannableString("Delete Account");
         string.setSpan(new ForegroundColorSpan(Color.RED),0,string.length(),0);
-        item.setTitle(string);
+        item1.setTitle(string);
+        MenuItem item=menu.findItem(R.id.search);
+        SearchView searchView=(SearchView)item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText.toLowerCase());
+                return false;
+            }
+        });
         return true;
+    }
+
+    private void filter(String text) {
+        count=viewPager.getCurrentItem();
+        try {
+            if (count == 0){
+                Shared fragment= (Shared) viewPager.getAdapter().instantiateItem(viewPager,count);
+                fragment.search(text.toLowerCase());
+            }else if (count == 1){
+                Received fragment= (Received) viewPager.getAdapter().instantiateItem(viewPager,count);
+                fragment.search(text.toLowerCase());
+            }else {
+                Downloaded fragment= (Downloaded) viewPager.getAdapter().instantiateItem(viewPager,count);
+                fragment.search(text.toLowerCase());
+            }
+        }catch (Exception e){
+            Log.e("Home : search ====",e.getLocalizedMessage());
+        }
     }
 
     @Override
@@ -202,6 +240,9 @@ public class HomeScreen extends AppCompatActivity {
                 break;
             case R.id.users:
                 startActivity(new Intent(this,Users.class));
+                break;
+            case R.id.search:
+
                 break;
         }
         return true;

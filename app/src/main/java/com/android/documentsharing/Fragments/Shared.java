@@ -105,4 +105,9 @@ public class Shared extends Fragment {
             });
         }
     }
+
+    public void search(String text) {
+
+    }
+
 }

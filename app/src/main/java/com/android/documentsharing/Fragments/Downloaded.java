@@ -98,4 +98,11 @@ public class Downloaded extends Fragment {
             recyclerView.hideShimmerAdapter();
         }, 1000);
     }
+
+    public void search(String text) {
+        if (text.isEmpty()){
+
+        }
+    }
+
 }
