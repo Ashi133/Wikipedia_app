@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.documentsharing.Adapter.downloadAdapter;
-import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import java.io.File;
@@ -37,12 +36,12 @@ public class Downloaded extends Fragment {
         recyclerView=v.findViewById(R.id.download_rv);
         refreshLayout=v.findViewById(R.id.swipeRefresh2);
         arrayList=new ArrayList<>();
-        adapter=new downloadAdapter(requireActivity(),arrayList);
+        adapter=new downloadAdapter(requireActivity(),arrayList,Downloaded.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(() -> {
-            loadData();
+            loadData(true);
             refreshLayout.setRefreshing(false);
         });
         return v;
@@ -51,18 +50,19 @@ public class Downloaded extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && isResumed()) {
-            loadData();
+        if (isVisibleToUser && isResumed()){
+            loadData(true);
         }
     }
-    private void loadData() {
+
+    public void loadData(boolean b) {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE },23);
         }else {
             recyclerView.showShimmerAdapter();
             //loading downloaded file here.
-            findFiles();
+            findFiles(!b);
         }
     }
     @Override
@@ -70,14 +70,14 @@ public class Downloaded extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 23){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                loadData();
+                loadData(true);
             }else {
                 Toast.makeText(requireActivity(), "Permission required!", Toast.LENGTH_SHORT).show();
             }
         }
     }
     @SuppressLint ("NotifyDataSetChanged")
-    public void findFiles() {
+    public void findFiles(boolean b) {
         arrayList.clear();
         File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Document Sharing");
         if (!file.exists() && ! file.isDirectory()){
@@ -95,7 +95,8 @@ public class Downloaded extends Fragment {
         }
         adapter.notifyDataSetChanged();
         new Handler().postDelayed(() -> {
-            Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
+            if (!b)
+                Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
             recyclerView.hideShimmerAdapter();
         }, 1000);
     }

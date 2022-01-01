@@ -1,22 +1,26 @@
 package com.android.documentsharing.Adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.documentsharing.Activities.Users;
+import com.android.documentsharing.Fragments.Downloaded;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
-
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -28,10 +32,12 @@ public class downloadAdapter extends RecyclerView.Adapter {
     Context context;
     int count;
     int empty=0,not_empty=1;
+    Downloaded fragmentActivity;
     String []months={"Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"};
-    public downloadAdapter(Context context,ArrayList<File> arrayList) {
+    public downloadAdapter(Context context, ArrayList<File> arrayList, Downloaded fragmentActivity) {
         this.arrayList = arrayList;
         this.context = context;
+        this.fragmentActivity=fragmentActivity;
     }
 
     @NonNull
@@ -46,7 +52,7 @@ public class downloadAdapter extends RecyclerView.Adapter {
 
     @SuppressLint ({ "SetTextI18n", "NonConstantResourceId" })
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint ("RecyclerView") int position) {
         if (holder.getClass() == Empty.class){
             Empty container=(Empty) holder;
             container.label.setText("Nothing has been downloaded !");
@@ -82,10 +88,53 @@ public class downloadAdapter extends RecyclerView.Adapter {
                     popupMenu.setOnMenuItemClickListener(menuItem -> {
                         switch (menuItem.getItemId()){
                             case R.id.Share:
-
+                                View view3=LayoutInflater.from(context).inflate(R.layout.share_via,null);
+                                AlertDialog dialog=new AlertDialog.Builder(context)
+                                        .setCancelable(false)
+                                        .setTitle("Share Via")
+                                        .setView(view3)
+                                        .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                                        .create();
+                                dialog.show();
+                                LinearLayout layout,layout1;
+                                layout=view3.findViewById(R.id.linear2);
+                                layout1=view3.findViewById(R.id.linear3);
+                                //sharing in this application.
+                                layout.setOnClickListener(view12 -> {
+                                    dialog.dismiss();
+                                    String path1 =arrayList.get(position).getPath();
+                                    String uri=arrayList.get(position).getPath();
+                                    Intent intent=new Intent(context, Users.class);
+                                    intent.putExtra("path", path1);
+                                    intent.putExtra("uri",uri);
+                                    context.startActivity(intent);
+                                });
+                                layout1.setOnClickListener(view1 -> {//sharing to other apps.
+                                    dialog.dismiss();
+                                    Intent intent=new Intent(Intent.ACTION_SEND);
+                                    intent.setType("*/*");
+                                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(arrayList.get(position).getPath()));
+                                    context.startActivity(intent);
+                                });
                                 break;
                             case R.id.Delete:
-
+                                AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                                builder.setTitle("Delete");
+                                builder.setMessage("Do you want to delete this file ?");
+                                builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                                    File file1=arrayList.get(position);
+                                    if (file1.delete()){
+                                        dialogInterface.dismiss();
+                                        fragmentActivity.loadData(false);
+                                        Toast.makeText(context, "Deleted successfully!", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        dialogInterface.dismiss();
+                                        Toast.makeText(context, "Unable to delete", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
+                                builder.setCancelable(false);
+                                builder.show();
                                 break;
                         }
                         return true;

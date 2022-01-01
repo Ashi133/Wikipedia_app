@@ -18,12 +18,14 @@ public class IconsHolder {
         icons.put("cpp",R.drawable.cpp);
         icons.put("csv",R.drawable.csv);
         icons.put("docx",R.drawable.doc);
+        icons.put("doc",R.drawable.doc);
         icons.put("mp3",R.drawable.audio);
         icons.put("mp4",R.drawable.audio);
         icons.put("m4a",R.drawable.audio);
         icons.put("wav",R.drawable.audio);
         icons.put("java",R.drawable.java);
         icons.put("jpg",R.drawable.jpg);
+        icons.put("jpeg",R.drawable.jpg);
         icons.put("png",R.drawable.png);
         icons.put("json",R.drawable.json);
         icons.put("py",R.drawable.python);
@@ -41,6 +43,7 @@ public class IconsHolder {
         icons.put("vbs",R.drawable.vb);
         icons.put("xml",R.drawable.xml);
         icons.put("zip",R.drawable.zip);
+        icons.put("sh",R.drawable.sh);
     }
 
 }

@@ -92,8 +92,8 @@ public class sharedAdapter extends RecyclerView.Adapter {
             }else {
                 container.relativeLayout.setBackgroundResource(R.drawable.bg2);
             }
-            int res=IconsHolder.getIcon(arrayList.get(position).getExtension());
             try {
+                int res=IconsHolder.getIcon(arrayList.get(position).getExtension());
                 container.icon.setImageResource(res);
             }catch (Exception e){
                 Toast.makeText(context, "Icon not found for file extension : "+arrayList.get(position).getExtension(), Toast.LENGTH_SHORT).show();
