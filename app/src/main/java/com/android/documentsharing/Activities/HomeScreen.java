@@ -42,6 +42,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -372,7 +373,80 @@ public class HomeScreen extends AppCompatActivity {
                                                                             dialog3.setMessage("Deleting Account just wait few moment....");
                                                                             dialog3.setCancelable(false);
                                                                             dialog3.show();
+                                                                            for (documentHolder holder:arrayList){
+                                                                                String url= holder.getUrl();
+                                                                                //deleting files.
+                                                                                FirebaseStorage.getInstance().getReferenceFromUrl(url).delete();
+                                                                            }
+                                                                            database.child("Document_user").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                                                                                @Override
+                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                                    if (snapshot.exists()){
+                                                                                        com.android.documentsharing.Holder.Users holder=snapshot.getValue(com.android.documentsharing.Holder.Users.class);
+                                                                                        if (holder != null){
+                                                                                            String url= holder.getUrl();
+                                                                                            if (url != null){
+                                                                                                FirebaseStorage.getInstance().getReferenceFromUrl(url).delete();
+                                                                                            }
+                                                                                            //deleting saved data on database.
+                                                                                            FirebaseDatabase.getInstance().getReference("DocumentSharing").child("Documents").child(auth.getCurrentUser().getUid()).setValue(null);
+                                                                                            //deleting profile.
+                                                                                            FirebaseDatabase.getInstance().getReference("DocumentSharing").child("Document_user").child(auth.getCurrentUser().getUid()).setValue(null);
+                                                                                            //deleting access specifier.
+                                                                                            FirebaseDatabase.getInstance().getReference().child("document").addValueEventListener(new ValueEventListener() {
+                                                                                                @Override
+                                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                                                                                        if (snapshot1.getKey().equals(auth.getCurrentUser().getUid())){
+                                                                                                            FirebaseDatabase.getInstance().getReference().child("document").child(snapshot1.getKey()).setValue(null);
+                                                                                                            break;
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
 
+                                                                                                @Override
+                                                                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                                                                    dialog3.dismiss();
+                                                                                                }
+                                                                                            });
+                                                                                            FirebaseUser user=auth.getCurrentUser();
+                                                                                            if (user != null){
+                                                                                                user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                    @Override
+                                                                                                    public void onSuccess(Void unused) {
+                                                                                                        dialog3.dismiss();
+                                                                                                        Toast.makeText(HomeScreen.this, "Account deleted successfully!", Toast.LENGTH_SHORT).show();
+                                                                                                        new Handler().postDelayed(new Runnable() {
+                                                                                                            @Override
+                                                                                                            public void run() {
+                                                                                                                Intent intent=new Intent(HomeScreen.this,Login.class);
+                                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                                                                startActivity(intent);
+                                                                                                            }
+                                                                                                        }, 1500);
+                                                                                                    }
+                                                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                                                                    @Override
+                                                                                                    public void onFailure(@NonNull Exception e) {
+                                                                                                   dialog3.dismiss();
+                                                                                                    }
+                                                                                                });
+                                                                                            }
+                                                                                        }else {
+                                                                                            dialog3.dismiss();
+                                                                                        }
+                                                                                    }else {
+                                                                                        dialog3.dismiss();
+                                                                                    }
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                                                    dialog3.dismiss();
+                                                                                    Toast.makeText(HomeScreen.this, "Home screen : Unable to load profile data : "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            });
                                                                         }
                                                                     }, 1000);
                                                                 }else {
