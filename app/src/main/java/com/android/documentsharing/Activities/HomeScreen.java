@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -28,12 +29,14 @@ import com.android.documentsharing.Adapter.ViewPagerAdapter;
 import com.android.documentsharing.Fragments.Downloaded;
 import com.android.documentsharing.Fragments.Received;
 import com.android.documentsharing.Fragments.Shared;
+import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.HttpTrustManager;
 import com.android.documentsharing.R;
 import com.android.documentsharing.databinding.DeleteAccountBinding;
 import com.android.documentsharing.databinding.LogoutBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseException;
@@ -48,8 +51,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings ("ALL")
@@ -62,13 +67,15 @@ public class HomeScreen extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
     StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
-    private int count=0;
+    int count=0;
+    ArrayList<documentHolder> arrayList;
 
     @Override
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
         setContentView(R.layout.activity_home_screen);
         auth=FirebaseAuth.getInstance();
+        arrayList=new ArrayList<>();
         viewPager=findViewById(R.id.viewPager);
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
@@ -233,7 +240,7 @@ public class HomeScreen extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //log out code goes here...
-                        DeleteAccount();
+                        loadData();
                         dialog1.dismiss();
                     }
                 });
@@ -246,6 +253,36 @@ public class HomeScreen extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private void loadData() {
+        ProgressDialog dialog=new ProgressDialog(HomeScreen.this);
+        dialog.setProgressStyle(0);
+        dialog.setMessage("Processing please wait...");
+        dialog.setCancelable(false);
+        dialog.show();
+        database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrayList.clear();
+                if (snapshot.exists()){
+                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                        documentHolder holder=snapshot1.getValue(documentHolder.class);
+                        arrayList.add(holder);
+                    }
+                    dialog.dismiss();
+                    DeleteAccount();
+                }else {
+                    dialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                dialog.dismiss();
+                Toast.makeText(HomeScreen.this, "Home screen : failed due to :-"+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void DeleteAccount() {
