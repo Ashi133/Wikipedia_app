@@ -2,7 +2,7 @@ package com.android.documentsharing.Holder;
 
 public class Users {
     String name,about,uId,code,number,finalNo,url;
-
+    boolean Private;
     public Users() {
     }
 
@@ -14,6 +14,14 @@ public class Users {
         this.number = number;
         this.finalNo = finalNo;
         this.url = url;
+    }
+
+    public boolean isPrivate() {
+        return Private;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        Private = aPrivate;
     }
 
     public String getName() {

@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +24,6 @@ import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.android.documentsharing.databinding.ActivitySaveProfileBinding;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+@SuppressWarnings("ALL")
 public class saveProfile extends AppCompatActivity {
     private CircleImageView profile;
     private EditText name,about;
@@ -149,6 +146,7 @@ public class saveProfile extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             Users users;
             users = new Users(userName,userAbout, Objects.requireNonNull(auth.getCurrentUser()).getUid(),code,number,finalNo,imgPath);
+            users.setPrivate(false);
             if (uri == null) {
                 sendDataToDatabase(users);
             } else {
@@ -215,6 +213,7 @@ public class saveProfile extends AppCompatActivity {
                     userAbout=about.getText().toString();
                     Users users1;
                     users1=new Users(userName,userAbout, Objects.requireNonNull(auth.getCurrentUser()).getUid(),code,number,finalNo,imgPath);
+                    users1.setPrivate(false);
                     sendDataToDatabase(users1);
                 }).addOnFailureListener(e -> {
                     progressBar.setVisibility(View.INVISIBLE);

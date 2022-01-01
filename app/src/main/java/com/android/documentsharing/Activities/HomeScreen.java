@@ -5,13 +5,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.viewpager.widget.ViewPager;
-
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
@@ -24,7 +22,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.android.documentsharing.Adapter.ViewPagerAdapter;
 import com.android.documentsharing.Fragments.Downloaded;
 import com.android.documentsharing.Fragments.Received;
@@ -52,9 +49,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -272,10 +267,10 @@ public class HomeScreen extends AppCompatActivity {
                         arrayList.add(holder);
                     }
                     dialog.dismiss();
-                    DeleteAccount();
                 }else {
                     dialog.dismiss();
                 }
+                DeleteAccount();
             }
 
             @Override
@@ -393,22 +388,7 @@ public class HomeScreen extends AppCompatActivity {
                                                                                             //deleting profile.
                                                                                             FirebaseDatabase.getInstance().getReference("DocumentSharing").child("Document_user").child(auth.getCurrentUser().getUid()).setValue(null);
                                                                                             //deleting access specifier.
-                                                                                            FirebaseDatabase.getInstance().getReference().child("document").addValueEventListener(new ValueEventListener() {
-                                                                                                @Override
-                                                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                                                                                        if (snapshot1.getKey().equals(auth.getCurrentUser().getUid())){
-                                                                                                            FirebaseDatabase.getInstance().getReference().child("document").child(snapshot1.getKey()).setValue(null);
-                                                                                                            break;
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-
-                                                                                                @Override
-                                                                                                public void onCancelled(@NonNull DatabaseError error) {
-                                                                                                    dialog3.dismiss();
-                                                                                                }
-                                                                                            });
+                                                                                            FirebaseDatabase.getInstance().getReference().child("document").child(auth.getCurrentUser().getUid()).removeValue();
                                                                                             FirebaseUser user=auth.getCurrentUser();
                                                                                             if (user != null){
                                                                                                 user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -429,7 +409,8 @@ public class HomeScreen extends AppCompatActivity {
                                                                                                 }).addOnFailureListener(new OnFailureListener() {
                                                                                                     @Override
                                                                                                     public void onFailure(@NonNull Exception e) {
-                                                                                                   dialog3.dismiss();
+                                                                                                        dialog3.dismiss();
+                                                                                                        Log.d("Home screen : User delete error = ",e.getLocalizedMessage());
                                                                                                     }
                                                                                                 });
                                                                                             }

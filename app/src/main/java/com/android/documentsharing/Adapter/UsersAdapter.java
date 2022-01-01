@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.documentsharing.Activities.Users_profile;
 import com.android.documentsharing.Holder.Users;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
@@ -230,6 +233,19 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         }catch (Exception e){
                             Log.e("Error user adapter = ",e.getLocalizedMessage());
                         }
+                    }else {
+                        String name=arrayList.get(position).getName();
+                        String about=arrayList.get(position).getAbout();
+                        String number=arrayList.get(position).getFinalNo();
+                        String url=arrayList.get(position).getUrl();
+                        String id=arrayList.get(position).getuId();
+                        Intent intent=new Intent(context, Users_profile.class);
+                        intent.putExtra("name",name);
+                        intent.putExtra("about",about);
+                        intent.putExtra("number",number);
+                        intent.putExtra("url",url);
+                        intent.putExtra("id",id);
+                        context.startActivity(intent);
                     }
                 }
             });
