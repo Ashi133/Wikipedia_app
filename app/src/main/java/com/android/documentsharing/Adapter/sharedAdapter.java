@@ -80,6 +80,12 @@ public class sharedAdapter extends RecyclerView.Adapter {
             container.property.setSelected(true);
             container.receiver.setSelected(true);
             container.name.setText(dname);
+            boolean New=arrayList.get(position).isNew();
+            if (New){
+                container.New.setVisibility(View.VISIBLE);
+            }else {
+                container.New.setVisibility(View.GONE);
+            }
             container.property.setText(String.format("%s | %s | %s",dsize,dtime,ddate));
             if (dreceiver.contains(":")){
                 String array[]=dreceiver.split(":");
@@ -306,7 +312,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
     }
     public class NotEmpty extends RecyclerView.ViewHolder{
         ImageView icon;
-        TextView name,property,receiver;
+        TextView name,property,receiver,New;
         ImageView option;
         RelativeLayout relativeLayout;
         public NotEmpty(@NonNull View itemView) {
@@ -317,6 +323,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
             option=itemView.findViewById(R.id.document_option);
             name=itemView.findViewById(R.id.document_name);
             relativeLayout=itemView.findViewById(R.id.outline_rel);
+            New=itemView.findViewById(R.id.newDoc);
         }
     }
 }

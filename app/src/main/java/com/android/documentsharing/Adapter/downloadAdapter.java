@@ -103,7 +103,8 @@ public class downloadAdapter extends RecyclerView.Adapter {
                                 layout.setOnClickListener(view12 -> {
                                     dialog.dismiss();
                                     String path1 =arrayList.get(position).getPath();
-                                    String uri=arrayList.get(position).getPath();
+                                    File file1=arrayList.get(position);
+                                    String uri=Uri.fromFile(file1).toString();
                                     Intent intent=new Intent(context, Users.class);
                                     intent.putExtra("path", path1);
                                     intent.putExtra("uri",uri);
