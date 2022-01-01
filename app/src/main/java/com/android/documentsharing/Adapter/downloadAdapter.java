@@ -142,6 +142,18 @@ public class downloadAdapter extends RecyclerView.Adapter {
                     });
                     popupMenu.show();
                 });
+                container.itemView.setOnClickListener(view -> {
+                    Intent intent=new Intent();
+                    intent.setType("*/*");
+                    intent.putExtra(Intent.EXTRA_STREAM,Uri.parse(arrayList.get(position).getPath()));
+                    String name1 =arrayList.get(position).getName();
+                    String[] array1 = name1.split("\\.");
+                    String ext1 = array1[ array1.length-1];
+                    if (ext1.equals("pdf") || ext1.equals("doc") || ext1.equals("docx") || ext1.equals("xlsx")){
+                        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                    }
+                    context.startActivity(intent);
+                });
             }catch (Exception e){
                 Toast.makeText(context, "Download Adapter : error = "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
