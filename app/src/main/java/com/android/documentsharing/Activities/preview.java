@@ -9,7 +9,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
+
+import com.android.documentsharing.R;
 import com.android.documentsharing.databinding.ActivityPreviewBinding;
+import com.bumptech.glide.Glide;
+
 public class preview extends AppCompatActivity {
     ActivityPreviewBinding binding;
     WebView webView;
@@ -39,12 +44,17 @@ public class preview extends AppCompatActivity {
             String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
             webView.loadUrl(finalUrl);
         }else if (extension.equals("jpg") ||
-                extension.equals("png")){
-            String url1= Uri.encode(url);
-            String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
-            webView.loadUrl(finalUrl);
+                extension.equals("png") || extension.equals("jpeg")){
+            webView.setVisibility(View.GONE);
+            binding.lottieAnimation.setVisibility(View.GONE);
+            Glide.with(preview.this)
+                    .load(Uri.parse(url))
+                    .centerCrop()
+                    .placeholder(R.drawable.user)
+                    .into(binding.imgPrev);
         }
         else {
+            Toast.makeText(preview.this, "Preview not available for this file", Toast.LENGTH_SHORT).show();
             webView.loadUrl("https://www.google.com");
         }
     }

@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -52,6 +52,7 @@ public class saveProfile extends AppCompatActivity {
     private FirebaseAuth auth;
     private String number,code,finalNo;
     private ActivitySaveProfileBinding binding;
+    boolean from=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,42 @@ public class saveProfile extends AppCompatActivity {
         number=getIntent().getStringExtra("number");
         code=getIntent().getStringExtra("code");
         finalNo=getIntent().getStringExtra("finalNo");
+        from=getIntent().getBooleanExtra("from",false);
+        if (from){
+            binding.linear4.setVisibility(View.VISIBLE);
+            if (UpdateOnlineStatus.check_network_state(saveProfile.this)){
+                databaseReference.child(auth.getCurrentUser().getUid()).child("private").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            boolean value=snapshot.getValue(boolean.class);
+                            binding.switch1.setChecked(value);
+                        }else {
+                            binding.switch1.setChecked(false);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }else{
+                binding.switch1.setChecked(false);
+            }
+        }else {
+            binding.linear4.setVisibility(View.GONE);
+        }
+        binding.switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!UpdateOnlineStatus.check_network_state(saveProfile.this)){
+                    Toast.makeText(saveProfile.this, "connection error!", Toast.LENGTH_SHORT).show();
+                }else{
+                    databaseReference.child(auth.getCurrentUser().getUid()).child("private").setValue(binding.switch1.isChecked());
+                }
+            }
+        });
         Show_previous_data();
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,7 +183,7 @@ public class saveProfile extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             Users users;
             users = new Users(userName,userAbout, Objects.requireNonNull(auth.getCurrentUser()).getUid(),code,number,finalNo,imgPath);
-            users.setPrivate(false);
+            users.setPrivate(binding.switch1.isChecked());
             if (uri == null) {
                 sendDataToDatabase(users);
             } else {
@@ -179,7 +216,9 @@ public class saveProfile extends AppCompatActivity {
                     editor.putBoolean("isSaved",true);
                     editor.apply();
                     new Handler().postDelayed(() -> {
-                        startActivity(new Intent(saveProfile.this,HomeScreen.class));
+                        if (!from){
+                            startActivity(new Intent(saveProfile.this,HomeScreen.class));
+                        }
                         finish();
                     },800);
                 }).addOnFailureListener(e -> {
@@ -213,7 +252,7 @@ public class saveProfile extends AppCompatActivity {
                     userAbout=about.getText().toString();
                     Users users1;
                     users1=new Users(userName,userAbout, Objects.requireNonNull(auth.getCurrentUser()).getUid(),code,number,finalNo,imgPath);
-                    users1.setPrivate(false);
+                    users1.setPrivate(binding.switch1.isChecked());
                     sendDataToDatabase(users1);
                 }).addOnFailureListener(e -> {
                     progressBar.setVisibility(View.INVISIBLE);
@@ -228,41 +267,35 @@ public class saveProfile extends AppCompatActivity {
     private void Show_previous_data() {
         if (UpdateOnlineStatus.check_network_state(saveProfile.this)){
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                databaseReference.addValueEventListener(new ValueEventListener() {
+                databaseReference.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            if (Objects.equals(ds.getKey(), FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                                Users user_holder = ds.getValue(Users.class);
-                                if (user_holder != null){
-                                    if (user_holder.getName() != null) {
-                                        userName = user_holder.getName();
-                                        name.setText(userName);
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            Users user_holder = snapshot.getValue(Users.class);
+                            if (user_holder != null) {
+                                if (user_holder.getName() != null) {
+                                    userName = user_holder.getName();
+                                    name.setText(userName);
+                                }
+                                if (user_holder.getAbout() != null) {
+                                    userAbout = user_holder.getAbout();
+                                    about.setText(userAbout);
+                                }
+                                if (user_holder.getUrl() != null) {
+                                    imgPath = user_holder.getUrl();
+                                    try {
+                                        Glide.with(saveProfile.this).load(Uri.parse(imgPath)).centerCrop().placeholder(R.drawable.user).into(profile);
+                                    } catch (Exception e) {
+                                        Log.e("Error = ", e.getLocalizedMessage());
                                     }
-                                    if (user_holder.getAbout() != null){
-                                        userAbout=user_holder.getAbout();
-                                        about.setText(userAbout);
-                                    }
-                                    if (user_holder.getUrl() != null) {
-                                        imgPath = user_holder.getUrl();
-                                        try{
-                                            Glide.with(saveProfile.this)
-                                                    .load(Uri.parse(imgPath))
-                                                    .centerCrop()
-                                                    .placeholder(R.drawable.user)
-                                                    .into(profile);
-                                        }catch (Exception e){
-                                            Log.e("Error = ",e.getLocalizedMessage());
-                                        }
-                                    }
-                                    break;
                                 }
                             }
                         }
                     }
+
                     @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                        Toast.makeText(saveProfile.this, "save profile :show previous Error due to:-" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
             }

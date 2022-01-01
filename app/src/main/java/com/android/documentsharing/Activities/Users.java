@@ -48,12 +48,18 @@ public class Users extends AppCompatActivity {
         uri=getIntent().getStringExtra("uri");
         path=getIntent().getStringExtra("path");
         boolean fromAdapter=getIntent().getBooleanExtra("fromAdapter",false);
+        boolean fromReceiver=getIntent().getBooleanExtra("fromReceiver",false);
         documentHolder holder=getIntent().getParcelableExtra("shareTo");
+        documentHolder holder1=getIntent().getParcelableExtra("shareTo");
         if (uri != null && path != null){
             adapter.notifyPath(uri,path);
         }else if (fromAdapter){
             if (holder != null){
                 adapter.sendTo(holder);
+            }
+        }else if (fromReceiver){
+            if (holder1 != null){
+                adapter.send(holder1);
             }
         }
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing");

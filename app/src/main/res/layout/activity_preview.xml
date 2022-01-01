@@ -20,4 +20,9 @@
         app:lottie_autoPlay="true"
         android:elevation="1dp"
         app:lottie_loop="true"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/imgPrev"
+        android:contentDescription="@null"
+        android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

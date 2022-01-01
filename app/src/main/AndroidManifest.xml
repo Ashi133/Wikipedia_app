@@ -23,7 +23,7 @@
         android:theme="@style/Theme.DocumentSharing"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".Activities.Users_profile"
+            android:name=".Activities.UserProfile"
             android:exported="false" />
         <activity
             android:name=".Activities.preview"

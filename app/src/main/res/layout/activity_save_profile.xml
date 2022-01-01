@@ -126,11 +126,41 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/linear4"
+        app:layout_constraintStart_toStartOf="@+id/linear4"
+        app:layout_constraintTop_toBottomOf="@+id/linear4"
+        tools:ignore="HardcodedText,TextContrastCheck" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout1"
         app:layout_constraintStart_toStartOf="@+id/linearLayout1"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout1"
-        tools:ignore="HardcodedText,TextContrastCheck" />
-
+        android:id="@+id/linear4"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:weightSum="2"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Private Account"
+            android:textColor="@color/white"
+            android:layout_weight="1.7"
+            tools:ignore="HardcodedText" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:id="@+id/switch1"/>
+    </LinearLayout>
     <ProgressBar
         android:id="@+id/profileProgress3"
         android:layout_width="match_parent"

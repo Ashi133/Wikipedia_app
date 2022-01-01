@@ -25,6 +25,7 @@ import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
+import com.android.documentsharing.downloadFile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -252,7 +253,9 @@ public class sharedAdapter extends RecyclerView.Adapter {
                                     if (!UpdateOnlineStatus.check_network_state(context)){
                                         Toast.makeText(context, "Connection error!", Toast.LENGTH_SHORT).show();
                                     }else{
-
+                                        String n=arrayList.get(position).getName();
+                                        String ext=arrayList.get(position).getExtension();
+                                        downloadFile.download(n,ext,context);
                                     }
                                     break;
                             }

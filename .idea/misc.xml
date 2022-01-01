@@ -18,8 +18,10 @@
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_main.xml" value="0.16822916666666668" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_preview.xml" value="0.16354166666666667" />
-        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_save_profile.xml" value="0.22" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_profile.xml" value="0.5" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_save_profile.xml" value="0.33" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_splash.xml" value="0.22" />
+        <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_user_profile.xml" value="0.22" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_users.xml" value="0.2" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_users_profile.xml" value="0.25" />
         <entry key="..\:/Androd Project/DocumentSharing/app/src/main/res/layout/activity_verify_number.xml" value="0.33" />

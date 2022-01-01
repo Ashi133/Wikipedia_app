@@ -173,6 +173,9 @@ public class HomeScreen extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent,"Share with"));
                 break;
             case R.id.user_setting:
+                Intent intent1=new Intent(HomeScreen.this,saveProfile.class);
+                intent1.putExtra("from",true);
+                startActivity(intent1);
                 break;
             case R.id.contact_us:
                 intent=new Intent(this,Contact_Us.class);

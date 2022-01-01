@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.documentsharing.Activities.Users_profile;
+import com.android.documentsharing.Activities.UserProfile;
 import com.android.documentsharing.Holder.Users;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
@@ -46,7 +46,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
     ArrayList<String> numbers;
     Context context;
     String name,about,url,uri,path;
-    documentHolder documentHolder;
+    documentHolder documentHolder,documentHolder1;
     boolean fromAdapter=false;
     int count;
     private static final int empty=0;
@@ -55,6 +55,8 @@ public class UsersAdapter extends RecyclerView.Adapter{
     DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
     StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
     String []months={"Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"};
+    private boolean fromReceiver=false;
+
     public UsersAdapter(Context context,ArrayList<Users> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -233,13 +235,59 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         }catch (Exception e){
                             Log.e("Error user adapter = ",e.getLocalizedMessage());
                         }
-                    }else {
+                    }else if (fromReceiver){
+                        try {
+                            AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                            builder.setCancelable(false);
+                            builder.setMessage("Sharing Please wait...");
+                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            AlertDialog dialog=builder.create();
+                            dialog.show();
+                            String rName=arrayList.get(position).getName();
+                            String id=arrayList.get(position).getuId();
+                            String node=documentHolder1.getNodeKey();
+                            if (!documentHolder1.getReceiverName().contains(rName)){
+                                documentHolder1.setReceiverName(documentHolder1.getReceiverName()+":"+rName);
+                            }else {
+                                documentHolder1.setReceiverName(documentHolder1.getReceiverName());
+                            }
+                            documentHolder1.setNew(false);
+                            database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").child(node).setValue(documentHolder1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    documentHolder1.setNew(true);
+                                    database.child("Documents").child(id).child("received").child(node).setValue(documentHolder1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            dialog.dismiss();
+                                            ((AppCompatActivity)context).finish();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            dialog.dismiss();
+                                            Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    fromReceiver=false;
+                                }
+                            });
+                        }catch (Exception e){
+                            Log.e("Error user adapter = ",e.getLocalizedMessage());
+                        }
+                    }
+                    else {
                         String name=arrayList.get(position).getName();
                         String about=arrayList.get(position).getAbout();
                         String number=arrayList.get(position).getFinalNo();
                         String url=arrayList.get(position).getUrl();
                         String id=arrayList.get(position).getuId();
-                        Intent intent=new Intent(context, Users_profile.class);
+                        Intent intent=new Intent(context, UserProfile.class);
                         intent.putExtra("name",name);
                         intent.putExtra("about",about);
                         intent.putExtra("number",number);
@@ -330,6 +378,11 @@ public class UsersAdapter extends RecyclerView.Adapter{
     public void sendTo(documentHolder holder) {
         documentHolder=holder;
         fromAdapter=true;
+    }
+
+    public void send(com.android.documentsharing.Holder.documentHolder holder1) {
+        documentHolder1=holder1;
+        fromReceiver=true;
     }
 
     public class Empty extends RecyclerView.ViewHolder{

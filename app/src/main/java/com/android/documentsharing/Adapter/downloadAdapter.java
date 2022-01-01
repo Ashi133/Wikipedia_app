@@ -55,7 +55,7 @@ public class downloadAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint ("RecyclerView") int position) {
         if (holder.getClass() == Empty.class){
             Empty container=(Empty) holder;
-            container.label.setText("Nothing has been downloaded !");
+            container.label.setText("Nothing has been downloaded ! pull down to refresh!");
             container.label.setGravity(Gravity.CENTER);
         }else if (holder.getClass() == not_Empty.class){
             not_Empty container=(not_Empty) holder;

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,11 +18,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.documentsharing.Activities.Users;
 import com.android.documentsharing.Activities.preview;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
+import com.android.documentsharing.downloadFile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,13 +155,41 @@ public class receivedAdapter extends RecyclerView.Adapter {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             switch (menuItem.getItemId()){
                                 case R.id.share:
-
+                                    Intent intent=new Intent(context, Users.class);
+                                    intent.putExtra("shareTo", (Parcelable) arrayList.get(position));
+                                    intent.putExtra("fromReceiver",true);
+                                    context.startActivity(intent);
                                     break;
                                 case R.id.download:
-
+                                    if (!UpdateOnlineStatus.check_network_state(context)){
+                                        Toast.makeText(context, "Connection error!", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        String n=arrayList.get(position).getName();
+                                        String ext=arrayList.get(position).getExtension();
+                                        downloadFile.download(n,ext,context);
+                                    }
                                     break;
                                 case R.id.delete:
-
+                                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                                    builder.setCancelable(false);
+                                    builder.setTitle("Delete");
+                                    builder.setMessage("Do you want to delete ?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            String node=arrayList.get(position).getNodeKey();
+                                            String id=auth.getCurrentUser().getUid();
+                                            database.child("Documents").child(id).child("received").child(node).setValue(null);
+                                            dialogInterface.dismiss();
+                                        }
+                                    });
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    });
+                                    builder.show();
                                     break;
                             }
                             return true;
