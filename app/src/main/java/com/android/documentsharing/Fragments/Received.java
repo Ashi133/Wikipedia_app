@@ -68,7 +68,9 @@ public class Received extends Fragment {
                     if (holder != null){
                         String file=holder.getName();
                         String owner=holder.getOwnerName();
-                        popUpNotification(file,owner);
+                        if (holder.isNew()){
+                            popUpNotification(file,owner);
+                        }
                     }
                 }
             }

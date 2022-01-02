@@ -56,9 +56,9 @@ public class preview extends AppCompatActivity {
             String url1= Uri.encode(url);
             String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
             webView.loadUrl(finalUrl);
-        }else if (extension.equals("jpg") ||
-                extension.equals("png") || extension.equals("jpeg")){
+        }else if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")){
             webView.setVisibility(View.GONE);
+            binding.imgPrev.setVisibility(View.GONE);
             Glide.with(preview.this)
                     .load(Uri.parse(url))
                     .centerCrop()
@@ -74,6 +74,7 @@ public class preview extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             binding.lottieAnimation.setVisibility(View.GONE);
+                            binding.imgPrev.setVisibility(View.VISIBLE);
                             return false;
                         }
                     })
