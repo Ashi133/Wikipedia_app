@@ -25,4 +25,13 @@
         android:id="@+id/imgPrev"
         android:contentDescription="@null"
         android:layout_height="match_parent"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/textView"
+        android:textSize="18sp"
+        android:scrollbars="vertical"
+        android:gravity="center_vertical|start"
+        android:padding="8dp"
+        android:textColor="#2196F3"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,6 +23,15 @@ public class IconsHolder {
         icons.put("mp4",R.drawable.audio);
         icons.put("m4a",R.drawable.audio);
         icons.put("wav",R.drawable.audio);
+        icons.put("flac",R.drawable.audio);
+        icons.put("fev",R.drawable.audio);
+        icons.put("omg",R.drawable.audio);
+        icons.put("igp",R.drawable.audio);
+        icons.put("wow",R.drawable.audio);
+        icons.put("vlc",R.drawable.audio);
+        icons.put("ogg",R.drawable.audio);
+        icons.put("ac3",R.drawable.audio);
+        icons.put("amf",R.drawable.audio);
         icons.put("java",R.drawable.java);
         icons.put("jpg",R.drawable.jpg);
         icons.put("jpeg",R.drawable.jpg);
@@ -35,6 +44,10 @@ public class IconsHolder {
         icons.put("wmv",R.drawable.video);
         icons.put("flv",R.drawable.video);
         icons.put("avi",R.drawable.video);
+        icons.put("webm",R.drawable.video);
+        icons.put("m4p",R.drawable.video);
+        icons.put("m4v",R.drawable.video);
+        icons.put("avchd",R.drawable.video);
         icons.put("kt",R.drawable.kotlin);
         icons.put("html",R.drawable.html);
         icons.put("css",R.drawable.css);
