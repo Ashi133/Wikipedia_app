@@ -1,9 +1,18 @@
 package com.android.documentsharing.Fragments;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,6 +28,7 @@ import com.android.documentsharing.R;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,11 +60,61 @@ public class Received extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (snapshot.exists()){
+                    documentHolder holder=snapshot.getValue(documentHolder.class);
+                    if (holder != null){
+                        String file=holder.getName();
+                        String owner=holder.getOwnerName();
+                        popUpNotification(file,owner);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         refreshLayout.setOnRefreshListener(() -> {
             load();
             refreshLayout.setRefreshing(false);
         });
         return view;
+    }
+    private void popUpNotification(String fName,String owner) {
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(requireActivity(), String.valueOf(123));
+        builder.setSmallIcon(R.drawable.sharing);
+        builder.setContentTitle("Received Document");
+        builder.setContentText(owner +"shared a file "+fName +" with you!");
+        builder.setAutoCancel(false);
+        builder.setPriority(Notification.PRIORITY_DEFAULT);
+        Notification notification=builder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel=new NotificationChannel("123","my notification", NotificationManager.IMPORTANCE_DEFAULT);
+            //channel.setDescription("My notification");
+            NotificationManager manager=(NotificationManager) requireActivity().getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+        }
+        NotificationManagerCompat compat = NotificationManagerCompat.from(requireActivity());
+        compat.notify(123,notification);
     }
     private void load() {
         if (!UpdateOnlineStatus.check_network_state(requireActivity())){

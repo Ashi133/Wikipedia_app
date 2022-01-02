@@ -1,12 +1,18 @@
 package com.android.documentsharing.Adapter;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.documentsharing.Activities.UserProfile;
@@ -51,6 +59,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
     int count;
     private static final int empty=0;
     private static final int not_empty=1;
+    NotificationManagerCompat compat;
     FirebaseAuth auth=FirebaseAuth.getInstance();
     DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
     StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
@@ -120,23 +129,12 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                             String node=FirebaseDatabase.getInstance().getReference().push().getKey();
                                             StorageReference reference = storageReference.child(auth.getCurrentUser().getUid()).child(node)
                                                     .child(name);
-                                            AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                                            builder.setCancelable(false);
-                                            builder.setMessage("Sharing Please wait...");
-                                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    reference.delete();
-                                                    dialogInterface.dismiss();
-                                                }
-                                            });
-                                            AlertDialog dialog=builder.create();
-                                            dialog.show();
+                                            //show file sharing notification
+                                            popUpNotification(receiver,name,"Sharing File");
                                             reference.putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                 @Override
                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                                     if (taskSnapshot.getTask().isSuccessful()){
-                                                        dialog.dismiss();
                                                         documentHolder holder1=new documentHolder(name,extension,size,date,time,receiver_id,owner,node);
                                                         holder1.setReceiverName(receiver);
                                                         holder1.setAccess(true);
@@ -153,11 +151,13 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                                         database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
                                                                             public void onSuccess(Void unused) {
+                                                                                compat.cancel(123);
                                                                                 ((AppCompatActivity)context).finish();
                                                                             }
                                                                         }).addOnFailureListener(new OnFailureListener() {
                                                                             @Override
                                                                             public void onFailure(@NonNull Exception e) {
+                                                                                compat.cancel(123);
                                                                                 Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                                             }
                                                                         });
@@ -165,6 +165,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                                 }).addOnFailureListener(new OnFailureListener() {
                                                                     @Override
                                                                     public void onFailure(@NonNull Exception e) {
+                                                                        compat.cancel(123);
                                                                         Toast.makeText(context, "User Adapter-2 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                                     }
                                                                 });
@@ -172,6 +173,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                         }).addOnFailureListener(new OnFailureListener() {
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
+                                                                compat.cancel(123);
                                                                 Toast.makeText(context, "User Adapter-3:Failed to get url due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                             }
                                                         });
@@ -180,7 +182,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                             }).addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    dialog.dismiss();
+                                                    compat.cancel(123);
                                                     Toast.makeText(context, "User Adapter-5:Failed to upload due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                 }
                                             });
@@ -198,20 +200,10 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         }
                     }else if (fromAdapter){
                         try {
-                            AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                            builder.setCancelable(false);
-                            builder.setMessage("Sharing Please wait...");
-                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                            AlertDialog dialog=builder.create();
-                            dialog.show();
                             String rName=arrayList.get(position).getName();
                             String id=arrayList.get(position).getuId();
                             String node=documentHolder.getNodeKey();
+                            popUpNotification(rName,documentHolder.getName(),"Sharing File");
                             if (!documentHolder.getReceiverName().contains(rName)){
                                 documentHolder.setReceiverName(documentHolder.getReceiverName()+":"+rName);
                             }else {
@@ -221,13 +213,13 @@ public class UsersAdapter extends RecyclerView.Adapter{
                             database.child("Documents").child(id).child("received").child(node).setValue(documentHolder).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    dialog.dismiss();
+                                    compat.cancel(123);
                                     ((AppCompatActivity)context).finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    dialog.dismiss();
+                                    compat.cancel(123);
                                     Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
@@ -237,20 +229,10 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         }
                     }else if (fromReceiver){
                         try {
-                            AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                            builder.setCancelable(false);
-                            builder.setMessage("Sharing Please wait...");
-                            builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            });
-                            AlertDialog dialog=builder.create();
-                            dialog.show();
                             String rName=arrayList.get(position).getName();
                             String id=arrayList.get(position).getuId();
                             String node=documentHolder1.getNodeKey();
+                            popUpNotification(rName, documentHolder1.getName(), "Sharing File");
                             if (!documentHolder1.getReceiverName().contains(rName)){
                                 documentHolder1.setReceiverName(documentHolder1.getReceiverName()+":"+rName);
                             }else {
@@ -264,13 +246,13 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                     database.child("Documents").child(id).child("received").child(node).setValue(documentHolder1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            dialog.dismiss();
+                                            compat.cancel(123);
                                             ((AppCompatActivity)context).finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            dialog.dismiss();
+                                            compat.cancel(123);
                                             Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                         }
                                     });
@@ -300,6 +282,28 @@ public class UsersAdapter extends RecyclerView.Adapter{
         }
 
     }
+
+    private void popUpNotification(String receiver, String name,String info) {
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(context, String.valueOf(123));
+        builder.setSmallIcon(R.drawable.sharing);
+        builder.setContentTitle(info);
+        builder.setContentText("Sharing file "+name+" to "+receiver+"...");
+        builder.setAutoCancel(false);
+        builder.setPriority(Notification.PRIORITY_DEFAULT);
+        Notification notification=builder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel=new NotificationChannel("123","my notification", NotificationManager.IMPORTANCE_DEFAULT);
+            //channel.setDescription("My notification");
+            NotificationManager manager=(NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+            compat=NotificationManagerCompat.from(context);
+            compat.notify(123,notification);
+        }else {
+            compat=NotificationManagerCompat.from(context);
+            compat.notify(123,notification);
+        }
+    }
+
     private String getSize(String pth) {
         String app_size;
         long size = new File(pth).length();

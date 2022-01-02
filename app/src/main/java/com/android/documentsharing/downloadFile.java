@@ -1,15 +1,23 @@
 package com.android.documentsharing;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -24,6 +32,9 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     @SuppressLint ("StaticFieldLeak")
     public static Context mContext;
     public static String mName,mExt,mUrl;
+    @SuppressLint ("StaticFieldLeak")
+    private static NotificationManagerCompat compat;
+
     public static void download(String name, String extension, Context context,String url){
         mContext=context;
         mName=name;
@@ -40,6 +51,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         String folder = Environment.getExternalStorageDirectory() + File.separator + "Document Sharing" + File.separator + mName;
         File file=new File(folder);
         if (!file.isFile() && !file.exists()){
+            popUpNotification(mName);
             st.getBytes(BYTE_SIZE).addOnSuccessListener(bytes -> {
                 try {
                     file.createNewFile();
@@ -47,8 +59,10 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
                     fos.write(bytes);
                     fos.flush();
                     fos.close();
+                    compat.cancel(123);
                     Toast.makeText(mContext, "Downloaded successfully at " + file, Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
+                    compat.cancel(123);
                     e.printStackTrace();
                 }
             });
@@ -66,5 +80,21 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
             }
         }
     }
-
+    private static void popUpNotification(String fName) {
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(mContext, String.valueOf(123));
+        builder.setSmallIcon(R.drawable.sharing);
+        builder.setContentTitle("Downloading");
+        builder.setContentText("Downloading file "+fName);
+        builder.setAutoCancel(false);
+        builder.setPriority(Notification.PRIORITY_DEFAULT);
+        Notification notification=builder.build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel=new NotificationChannel("123","my notification", NotificationManager.IMPORTANCE_DEFAULT);
+            //channel.setDescription("My notification");
+            NotificationManager manager=(NotificationManager) mContext.getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+        }
+        compat= NotificationManagerCompat.from(mContext);
+        compat.notify(123,notification);
+    }
 }
