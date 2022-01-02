@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -69,6 +70,8 @@ public class Received extends Fragment {
                         String file=holder.getName();
                         String owner=holder.getOwnerName();
                         if (holder.isNew()){
+                            MediaPlayer player=MediaPlayer.create(requireActivity(),R.raw.received);
+                            player.start();
                             popUpNotification(file,owner);
                         }
                     }

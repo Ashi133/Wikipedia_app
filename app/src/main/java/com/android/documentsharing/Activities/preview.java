@@ -67,6 +67,8 @@ public class preview extends AppCompatActivity {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             Toast.makeText(preview.this, "Unable to load file due to : -"+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            webView.setVisibility(View.VISIBLE);
+                            binding.lottieAnimation.setVisibility(View.GONE);
                             webView.loadUrl("https://www.google.com");
                             return false;
                         }
