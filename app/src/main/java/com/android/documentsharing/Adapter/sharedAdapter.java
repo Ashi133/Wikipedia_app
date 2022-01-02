@@ -255,7 +255,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
                                     }else{
                                         String n=arrayList.get(position).getName();
                                         String ext=arrayList.get(position).getExtension();
-                                        downloadFile.download(n,ext,context);
+                                        downloadFile.download(n,ext,context,arrayList.get(position).getUrl());
                                     }
                                     break;
                             }
