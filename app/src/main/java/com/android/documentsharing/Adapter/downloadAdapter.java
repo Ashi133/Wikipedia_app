@@ -2,6 +2,7 @@ package com.android.documentsharing.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,9 +16,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.documentsharing.Activities.Users;
+import com.android.documentsharing.BuildConfig;
 import com.android.documentsharing.Fragments.Downloaded;
 import com.android.documentsharing.IconsHolder;
 import com.android.documentsharing.R;
@@ -143,16 +146,17 @@ public class downloadAdapter extends RecyclerView.Adapter {
                     popupMenu.show();
                 });
                 container.itemView.setOnClickListener(view -> {
-                    Intent intent=new Intent();
-                    intent.setType("*/*");
-                    intent.putExtra(Intent.EXTRA_STREAM,Uri.parse(arrayList.get(position).getPath()));
-                    String name1 =arrayList.get(position).getName();
-                    String[] array1 = name1.split("\\.");
-                    String ext1 = array1[ array1.length-1];
-                    if (ext1.equals("pdf") || ext1.equals("doc") || ext1.equals("docx") || ext1.equals("xlsx")){
-                        intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                    Intent intent=new Intent(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    Uri uri= FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID+".provider",arrayList.get(position));
+                    intent.setDataAndType(uri,"application/*");
+                    Intent intent2=Intent.createChooser(intent,"Open with..");
+                    //intent2.putExtra(Intent.EXTRA_INITIAL_INTENTS,intent);
+                    try {
+                        context.startActivity(intent2);
+                    }catch (ActivityNotFoundException e){
+                        Toast.makeText(context, "No app found to open this file!", Toast.LENGTH_SHORT).show();
                     }
-                    context.startActivity(intent);
                 });
             }catch (Exception e){
                 Toast.makeText(context, "Download Adapter : error = "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

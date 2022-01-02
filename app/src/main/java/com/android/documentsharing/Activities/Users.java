@@ -32,6 +32,12 @@ public class Users extends AppCompatActivity {
     UsersAdapter adapter;
     ArrayList<com.android.documentsharing.Holder.Users> arrayList;
     String uri,path;
+    String[] permission;
+
+    {
+        permission = new String[]{ "android.permission.READ_CONTACTS", "android.permission.READ_EXTERNAL_STORAGE" };
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +81,12 @@ public class Users extends AppCompatActivity {
     private void loadUsers() {
         if (!UpdateOnlineStatus.check_network_state(this)){
             Toast.makeText(this, "Internet connection error!", Toast.LENGTH_SHORT).show();
-        }if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
-        && ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.READ_CONTACTS ,Manifest.permission.READ_EXTERNAL_STORAGE},22);
-        }else {
+        }else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,permission,22);
+        }else if (ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,permission,22);
+        }
+        else {
             binding.usersRv.showShimmerAdapter();
             reference.child("Document_user").addValueEventListener(new ValueEventListener() {
                 @SuppressLint ({ "NotifyDataSetChanged", "SetTextI18n" })
