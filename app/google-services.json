@@ -21,6 +21,14 @@
             "package_name": "com.android.documentsharing",
             "certificate_hash": "2cf5bbba5cda11a626f43aa45f2b369ba308015a"
           }
+        },
+        {
+          "client_id": "552513072431-bk23deqednirl6l1vn73afu3gbt23so1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.documentsharing",
+            "certificate_hash": "f87f3ea6d4df7bd0ad4b9c1fffc35b29013ef63e"
+          }
         }
       ],
       "api_key": [
