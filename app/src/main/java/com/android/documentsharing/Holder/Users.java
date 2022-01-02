@@ -1,8 +1,8 @@
 package com.android.documentsharing.Holder;
 
 public class Users {
-    String name,about,uId,code,number,finalNo,url;
-    boolean Private;
+    private String name,about,uId,code,number,finalNo,url;
+    private boolean Private;
     public Users() {
     }
 

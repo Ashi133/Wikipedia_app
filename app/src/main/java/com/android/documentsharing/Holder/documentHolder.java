@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 @SuppressWarnings("ALL")
 public class documentHolder implements Parcelable {
-    String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName,url;
-    boolean access;
-    boolean New=false;
+    private String name,extension,size,date,time,uid,ownerName,nodeKey,receiverName,url;
+    private boolean access;
+    private boolean New=false;
     public documentHolder() {
 
     }

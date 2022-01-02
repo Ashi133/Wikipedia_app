@@ -58,7 +58,6 @@ public class preview extends AppCompatActivity {
             webView.loadUrl(finalUrl);
         }else if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")){
             webView.setVisibility(View.GONE);
-            binding.imgPrev.setVisibility(View.GONE);
             Glide.with(preview.this)
                     .load(Uri.parse(url))
                     .centerCrop()
@@ -76,7 +75,6 @@ public class preview extends AppCompatActivity {
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             binding.lottieAnimation.setVisibility(View.GONE);
-                            binding.imgPrev.setVisibility(View.VISIBLE);
                             return false;
                         }
                     })
