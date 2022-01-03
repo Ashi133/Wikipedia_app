@@ -166,7 +166,20 @@ public class receivedAdapter extends RecyclerView.Adapter {
                                     }else{
                                         String n=arrayList.get(position).getName();
                                         String ext=arrayList.get(position).getExtension();
-                                        downloadFile.download(n,ext,context,arrayList.get(position).getUrl());
+                                        if (arrayList.get(position).isAccess()){
+                                            downloadFile.download(n,ext,context,arrayList.get(position).getUrl());
+                                        }else {
+                                            new AlertDialog.Builder(context)
+                                                    .setTitle("Access Denied")
+                                                    .setMessage("Download Access Is Denied By "+arrayList.get(position).getOwnerName()+" for this file!")
+                                                    .setCancelable(false)
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            dialogInterface.dismiss();
+                                                        }
+                                                    }).show();
+                                        }
                                     }
                                     break;
                                 case R.id.delete:
