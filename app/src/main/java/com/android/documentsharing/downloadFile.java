@@ -31,14 +31,13 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     private static final long BYTE_SIZE = 524288000;
     @SuppressLint ("StaticFieldLeak")
     public static Context mContext;
-    public static String mName,mExt,mUrl;
+    public static String mName,mUrl;
     @SuppressLint ("StaticFieldLeak")
     private static NotificationManagerCompat compat;
 
-    public static void download(String name, String extension, Context context,String url){
+    public static void download(String name,Context context,String url){
         mContext=context;
         mName=name;
-        mExt=extension;
         mUrl=url;
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE },25);

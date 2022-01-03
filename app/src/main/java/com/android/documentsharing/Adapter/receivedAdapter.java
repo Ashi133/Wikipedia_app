@@ -165,9 +165,8 @@ public class receivedAdapter extends RecyclerView.Adapter {
                                         Toast.makeText(context, "Connection error!", Toast.LENGTH_SHORT).show();
                                     }else{
                                         String n=arrayList.get(position).getName();
-                                        String ext=arrayList.get(position).getExtension();
                                         if (arrayList.get(position).isAccess()){
-                                            downloadFile.download(n,ext,context,arrayList.get(position).getUrl());
+                                            downloadFile.download(n,context,arrayList.get(position).getUrl());
                                         }else {
                                             new AlertDialog.Builder(context)
                                                     .setTitle("Access Denied")

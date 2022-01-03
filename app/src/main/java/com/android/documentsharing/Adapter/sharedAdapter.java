@@ -254,8 +254,7 @@ public class sharedAdapter extends RecyclerView.Adapter {
                                         Toast.makeText(context, "Connection error!", Toast.LENGTH_SHORT).show();
                                     }else{
                                         String n=arrayList.get(position).getName();
-                                        String ext=arrayList.get(position).getExtension();
-                                        downloadFile.download(n,ext,context,arrayList.get(position).getUrl());
+                                        downloadFile.download(n,context,arrayList.get(position).getUrl());
                                     }
                                     break;
                             }
