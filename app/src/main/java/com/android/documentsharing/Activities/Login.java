@@ -111,7 +111,7 @@ public class Login extends AppCompatActivity {
                                 public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                     super.onCodeSent(s, forceResendingToken);
                                     progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(Login.this, "Code sent successfully!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Login.this, "OTP has been sent on "+finalNumber + " Please verify it!", Toast.LENGTH_LONG).show();
                                     new Handler().postDelayed(() -> {
                                         startActivity(
                                                 new Intent(Login.this,verifyNumber.class)

@@ -70,7 +70,7 @@ public class verifyNumber extends AppCompatActivity {
                     auth.signInWithCredential(credential)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(verifyNumber.this, "verification successfully!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(verifyNumber.this, finalNo+" verified successfully!", Toast.LENGTH_LONG).show();
                                     FirebaseDatabase
                                             .getInstance()
                                             .getReference()

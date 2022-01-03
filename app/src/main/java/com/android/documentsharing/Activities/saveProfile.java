@@ -210,7 +210,7 @@ public class saveProfile extends AppCompatActivity {
         databaseReference.child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).setValue(users)
                 .addOnSuccessListener(unused -> {
                     progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(saveProfile.this, "Profile saved successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(saveProfile.this, users.getName()+" Profile Updated!", Toast.LENGTH_LONG).show();
                     SharedPreferences sharedPreferences=getSharedPreferences("state",MODE_PRIVATE);
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putBoolean("isSaved",true);

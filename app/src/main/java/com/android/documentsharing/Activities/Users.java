@@ -9,6 +9,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 import com.android.documentsharing.Adapter.UsersAdapter;
@@ -113,7 +114,7 @@ public class Users extends AppCompatActivity {
                                 binding.usersCount.setText(String.valueOf(arrayList.size()));
                             }
                         }
-                        binding.usersRv.hideShimmerAdapter();
+                        new Handler().postDelayed(() -> binding.usersRv.hideShimmerAdapter(), 1000);
                     }
                 }
 

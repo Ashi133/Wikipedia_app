@@ -95,8 +95,11 @@ public class Downloaded extends Fragment {
         }
         adapter.notifyDataSetChanged();
         new Handler().postDelayed(() -> {
-            if (!b)
-                Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
+            if (!b){
+             if (arrayList.size() >0){
+                 Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
+             }
+            }
             recyclerView.hideShimmerAdapter();
         }, 1000);
     }
