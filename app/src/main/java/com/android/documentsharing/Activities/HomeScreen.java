@@ -169,7 +169,7 @@ public class HomeScreen extends AppCompatActivity {
                 intent=new Intent("android.intent.action.SEND");
                 intent.setType("text/plain");
                 intent.putExtra("android.intent.extra.SUBJECT","Document Sharing App");
-                intent.putExtra("android.intent.extra.TEXT","This application help you to share document all over the world without any restriction and secured manner\nTo get this application click the link given below:-\n"+"https://tinyurl.com/y5vaqr8f"+"\n I hope it will helpful for you!\nThank you!");
+                intent.putExtra("android.intent.extra.TEXT","This application help you to share document all over the world without any restriction and secured manner\nTo get this application click the link given below:-\n"+"https://tinyurl.com/y6m2efwb"+"\n I hope it will helpful for you!\nThank you!");
                 startActivity(Intent.createChooser(intent,"Share with"));
                 break;
             case R.id.user_setting:
