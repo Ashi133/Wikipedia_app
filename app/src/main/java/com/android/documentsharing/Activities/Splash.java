@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.WindowManager;
 
 import com.android.documentsharing.R;
 import com.android.documentsharing.TypeWriter;
@@ -26,6 +27,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
         final TypeWriter tw = findViewById(R.id.type_writer);
         tw.setText("");
