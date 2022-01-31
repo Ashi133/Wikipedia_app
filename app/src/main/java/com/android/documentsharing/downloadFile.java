@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         mContext=context;
         mName=name;
         mUrl=url;
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE },25);
         }else {
             downloadDocument();
@@ -47,6 +48,11 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     }
     private static void downloadDocument() {
         StorageReference st= FirebaseStorage.getInstance().getReferenceFromUrl(mUrl);
+        File f= new File(Environment.getExternalStorageDirectory() + File.separator + "Document Sharing");
+        if (!(f.exists() && f.isDirectory())){
+            f.mkdirs();
+            Toast.makeText(mContext, "Directory created!", Toast.LENGTH_SHORT).show();
+        }
         String folder = Environment.getExternalStorageDirectory() + File.separator + "Document Sharing" + File.separator + mName;
         File file=new File(folder);
         if (!file.isFile() && !file.exists()){
@@ -62,6 +68,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
                     Toast.makeText(mContext, "Downloaded successfully at " + file, Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     compat.cancel(123);
+                    Log.e("Download error =",e.getLocalizedMessage());
                     e.printStackTrace();
                 }
             });
