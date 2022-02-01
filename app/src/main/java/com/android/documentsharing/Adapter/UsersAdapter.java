@@ -3,12 +3,10 @@ package com.android.documentsharing.Adapter;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -104,7 +102,7 @@ public class UsersAdapter extends RecyclerView.Adapter{
                         .centerCrop()
                         .into(container.profile);
             }catch (Exception e){
-                Toast.makeText(context, "Users Adapter:Error ="+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("Users Adapter : Error =",e.getLocalizedMessage());
             }
             container.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
