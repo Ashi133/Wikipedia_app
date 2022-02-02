@@ -50,9 +50,10 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     private static void downloadDocument() {
         StorageReference st= FirebaseStorage.getInstance().getReferenceFromUrl(mUrl);
         File f= new File(Environment.getExternalStorageDirectory() + File.separator + "Document Sharing");
-        if (!(f.exists() && f.isDirectory())){
-            f.mkdirs();
-            Toast.makeText(mContext, "Directory created!", Toast.LENGTH_SHORT).show();
+        if (!f.exists() && !f.isDirectory()){
+            if (f.mkdir()){
+                Toast.makeText(mContext, "Directory created!", Toast.LENGTH_SHORT).show();
+            }
         }
         String folder = Environment.getExternalStorageDirectory() + File.separator + "Document Sharing" + File.separator + mName;
         File file=new File(folder);
