@@ -40,8 +40,9 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         mContext=context;
         mName=name;
         mUrl=url;
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE },25);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        && ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE },25);
         }else {
             downloadDocument();
         }
@@ -79,7 +80,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 25){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 downloadDocument();
             }else {
                 Toast.makeText(mContext, "Permission Required!", Toast.LENGTH_SHORT).show();
