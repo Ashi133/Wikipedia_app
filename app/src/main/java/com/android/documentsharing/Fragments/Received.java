@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.android.documentsharing.Adapter.receivedAdapter;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
+import com.android.documentsharing.Security;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import javax.crypto.NoSuchPaddingException;
 
 public class Received extends Fragment {
     receivedAdapter adapter;
@@ -134,7 +137,13 @@ public class Received extends Fragment {
                     if (snapshot.exists()){
                         for (DataSnapshot snapshot1:snapshot.getChildren()){
                             documentHolder holder=snapshot1.getValue(documentHolder.class);
-                            arrayList.add(holder);
+                            try {
+                                String url= Security.Decrypt(holder.getUrl());
+                                holder.setUrl(url);
+                                arrayList.add(holder);
+                            } catch (NoSuchPaddingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     adapter.notifyDataSetChanged();

@@ -28,6 +28,7 @@ import com.android.documentsharing.Activities.UserProfile;
 import com.android.documentsharing.Holder.Users;
 import com.android.documentsharing.Holder.documentHolder;
 import com.android.documentsharing.R;
+import com.android.documentsharing.Security;
 import com.android.documentsharing.UpdateOnlineStatus;
 import com.android.documentsharing.isValidNumber;
 import com.bumptech.glide.Glide;
@@ -45,6 +46,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressWarnings("ALL")
 public class UsersAdapter extends RecyclerView.Adapter{
@@ -140,33 +146,47 @@ public class UsersAdapter extends RecyclerView.Adapter{
                                                         reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                             @Override
                                                             public void onSuccess(Uri uri4) {
-                                                                holder1.setUrl(uri4.toString());
-                                                                database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void unused) {
-                                                                        holder1.setReceiverName(receiver);
-                                                                        holder1.setNew(true);
-                                                                        database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                            @Override
-                                                                            public void onSuccess(Void unused) {
-                                                                                compat.cancel(123);
-                                                                                ((AppCompatActivity)context).finish();
-                                                                            }
-                                                                        }).addOnFailureListener(new OnFailureListener() {
-                                                                            @Override
-                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                compat.cancel(123);
-                                                                                Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        compat.cancel(123);
-                                                                        Toast.makeText(context, "User Adapter-2 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                                                                    }
-                                                                });
+                                                                try {
+                                                                    //performing url encryption.
+                                                                    String urls= Security.Encrypt(uri4.toString());
+                                                                    //copy on clipboard.
+                                                                    //ClipboardManager manager=(ClipboardManager)context.getSystemService(context.CLIPBOARD_SERVICE);
+                                                                    //ClipData data=ClipData.newPlainText("url",urls);
+                                                                    //manager.setPrimaryClip(data);
+                                                                    holder1.setUrl(urls);
+                                                                    database.child("Documents").child(auth.getCurrentUser().getUid()).child("shared").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void unused) {
+                                                                            holder1.setReceiverName(receiver);
+                                                                            holder1.setNew(true);
+                                                                            database.child("Documents").child(arrayList.get(position).getuId()).child("received").child(node).setValue(holder1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    compat.cancel(123);
+                                                                                    ((AppCompatActivity)context).finish();
+                                                                                }
+                                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    compat.cancel(123);
+                                                                                    Toast.makeText(context, "User Adapter-1 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            compat.cancel(123);
+                                                                            Toast.makeText(context, "User Adapter-2 :Failed to update database due to : "+e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    });
+                                                                } catch (NoSuchPaddingException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (BadPaddingException e) {
+                                                                    e.printStackTrace();
+                                                                } catch (IllegalBlockSizeException e) {
+                                                                    e.printStackTrace();
+                                                                }
                                                             }
                                                         }).addOnFailureListener(new OnFailureListener() {
                                                             @Override
