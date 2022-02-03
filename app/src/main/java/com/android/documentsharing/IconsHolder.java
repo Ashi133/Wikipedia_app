@@ -58,6 +58,7 @@ public class IconsHolder {
         icons.put("zip",R.drawable.zip);
         icons.put("sh",R.drawable.sh);
         icons.put("vcf",R.drawable.vcf);
+        icons.put("pptx",R.drawable.pptx);
     }
 
 }

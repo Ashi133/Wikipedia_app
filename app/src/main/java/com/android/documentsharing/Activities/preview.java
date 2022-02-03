@@ -55,6 +55,7 @@ public class preview extends AppCompatActivity {
         if (arrayList.contains(extension)){
             String url1= Uri.encode(url);
             String finalUrl="https://docs.google.com/viewer?url="+url1+"&embedded=true";
+            binding.textView.setVisibility(View.GONE);
             webView.loadUrl(finalUrl);
         }else if (extension.equals("jpg") || extension.equals("png") || extension.equals("jpeg")){
             webView.setVisibility(View.GONE);
@@ -82,6 +83,7 @@ public class preview extends AppCompatActivity {
         }else if (arrayList1.contains(extension)){
             webView.setVisibility(View.GONE);
             binding.imgPrev.setVisibility(View.GONE);
+            binding.textView.setVisibility(View.VISIBLE);
             new Thread(() -> {
                 ArrayList<String> lines=new ArrayList<>();//to read each lines.
                 try {
@@ -125,6 +127,7 @@ public class preview extends AppCompatActivity {
         arrayList.add("pdf");//documents files type.
         arrayList.add("docx");
         arrayList.add("doc");
+        arrayList.add("pptx");
         arrayList.add("xlsx");
         arrayList.add("csv");
         arrayList1.add("c");//text files type.
@@ -163,19 +166,14 @@ public class preview extends AppCompatActivity {
         arrayList2.add("avchd");
         webView=binding.webView;
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.getSettings().setSupportMultipleWindows(true);
+        webView.setVerticalScrollBarEnabled(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(true);
+        webView.getSettings().setDisplayZoomControls(true);
         webView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
-                //super.onPageFinished(view, url);
+                super.onPageFinished(view, url);
                 webView.setVisibility(View.VISIBLE);
                 binding.lottieAnimation.setVisibility(View.GONE);
             }
