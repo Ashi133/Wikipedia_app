@@ -8,22 +8,7 @@
         android:id="@+id/search"
         android:icon="@drawable/search"
         tools:ignore="HardcodedText" />
-    <item android:title="Users"
-        android:id="@+id/users"
-        tools:ignore="HardcodedText" />
-    <item android:title="Share App"
-    android:id="@+id/share_app"
-    tools:ignore="HardcodedText" />
     <item android:title="Settings"
-        android:id="@+id/user_setting"
-        tools:ignore="HardcodedText" />
-    <item android:title="Contact Us"
-        android:id="@+id/contact_us"
-        tools:ignore="HardcodedText" />
-    <item android:title="Log Out"
-        android:id="@+id/log_out"
-        tools:ignore="HardcodedText" />
-    <item android:title="Delete Account"
-        android:id="@+id/delete_account"
+        android:id="@+id/settings"
         tools:ignore="HardcodedText" />
 </menu>

@@ -2,16 +2,16 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Shared"
-        android:icon="@drawable/share"
+    <item android:title="Articles"
+        android:icon="@drawable/article"
         android:id="@+id/shared_item"
         tools:ignore="HardcodedText" />
-    <item android:title="Received"
-        android:icon="@drawable/received"
+    <item android:title="Featured Image"
+        android:icon="@drawable/png"
         android:id="@+id/received_item"
         tools:ignore="HardcodedText" />
-    <item android:title="Downloaded"
-        android:icon="@drawable/download"
+    <item android:title="Category List"
+        android:icon="@drawable/list"
         android:id="@+id/downloaded_item"
         tools:ignore="HardcodedText" />
 </menu>
