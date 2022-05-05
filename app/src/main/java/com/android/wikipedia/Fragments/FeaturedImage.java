@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.wikipedia.Adapter.FeaturedImageAdapter;
-import com.android.wikipedia.Holder.documentHolder;
+
 import com.android.wikipedia.R;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +42,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class FeaturedImage extends Fragment {
     FeaturedImageAdapter adapter;
-    ArrayList<documentHolder> arrayList;
+    //ArrayList<documentHolder> arrayList;
     ShimmerRecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
     DatabaseReference reference;
@@ -57,57 +57,16 @@ public class FeaturedImage extends Fragment {
         auth=FirebaseAuth.getInstance();
         reference= FirebaseDatabase.getInstance().getReference().child("DocumentSharing").child("Documents")
                 .child(Objects.requireNonNull(auth.getCurrentUser()).getUid()).child("received");
-        arrayList=new ArrayList<>();
-        adapter=new FeaturedImageAdapter(requireActivity(),arrayList);
+        //arrayList=new ArrayList<>();
+        //adapter=new FeaturedImageAdapter(requireActivity(),arrayList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        recyclerView.setAdapter(adapter);
-        reference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()){
-                    documentHolder holder=snapshot.getValue(documentHolder.class);
-                    if (holder != null){
-                        String file=holder.getName();
-                        String owner=holder.getOwnerName();
-                        if (holder.isNew()){
-                            MediaPlayer player=MediaPlayer.create(requireActivity(),R.raw.received);
-                            player.start();
-                            popUpNotification(file,owner);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        refreshLayout.setOnRefreshListener(() -> {
-            load();
-            refreshLayout.setRefreshing(false);
-        });
+        //recyclerView.setAdapter(adapter);
         return view;
     }
     private void popUpNotification(String fName,String owner) {
         NotificationCompat.Builder builder=new NotificationCompat.Builder(requireActivity(), String.valueOf(123));
-        builder.setSmallIcon(R.drawable.sharing);
+        builder.setSmallIcon(R.drawable.wikipedia);
         builder.setContentTitle("Received Document");
         builder.setContentText(owner +"shared a file "+fName +" with you!");
         builder.setAutoCancel(false);
@@ -122,60 +81,16 @@ public class FeaturedImage extends Fragment {
         NotificationManagerCompat compat = NotificationManagerCompat.from(requireActivity());
         compat.notify(123,notification);
     }
-    private void load() {
-        if (!UpdateOnlineStatus.check_network_state(requireActivity())){
-            Toast.makeText(requireActivity(), "Internet Connection error !", Toast.LENGTH_SHORT).show();
-        }else{
-            recyclerView.showShimmerAdapter();
-            reference.addValueEventListener(new ValueEventListener() {
-                @SuppressLint ("NotifyDataSetChanged")
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    arrayList.clear();
-                    if (snapshot.exists()){
-                        for (DataSnapshot snapshot1:snapshot.getChildren()){
-                            documentHolder holder=snapshot1.getValue(documentHolder.class);
-                            try {
-                                String url= Security.Decrypt(holder.getUrl());
-                                holder.setUrl(url);
-                                arrayList.add(holder);
-                            } catch (NoSuchPaddingException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    adapter.notifyDataSetChanged();
-                    new Handler().postDelayed(() -> recyclerView.hideShimmerAdapter(), 1000);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-    }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()){
-            load();
+            //load();
         }
     }
 
     public void search(String text) {
-        ArrayList<documentHolder> temp=new ArrayList<>();
-        if (text.isEmpty()){
-            temp.addAll(arrayList);
-        }else {
-            for (documentHolder holder:arrayList){
-                if (holder.getName().toLowerCase().contains(text)){
-                    temp.add(holder);
-                }
-            }
-        }
-        adapter.updateList(temp);
+
     }
 
 }

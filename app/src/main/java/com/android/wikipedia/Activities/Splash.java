@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.android.wikipedia.R;
-import com.android.wikipedia.TypeWriter;
+import com.android.wikipedia.*;
 import com.android.wikipedia.databinding.ActivitySplashBinding;
 
 import java.util.Objects;

@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.wikipedia.Adapter.ViewPagerAdapter;
+import com.android.wikipedia.Adapter.*;
 import com.android.wikipedia.Fragments.CategoryList;
 import com.android.wikipedia.Fragments.FeaturedImage;
 import com.android.wikipedia.Fragments.Articles;
@@ -136,7 +136,7 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
-                new Intent(HomeScreen.this,Settings.class);
+                new Intent(HomeScreen.this,setting.class);
                 break;
         }
         return true;

@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.wikipedia.BuildConfig;
 import com.android.wikipedia.Fragments.CategoryList;
 import com.android.wikipedia.R;
 import java.io.File;
@@ -44,123 +43,13 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == empty){
-            return new Empty(LayoutInflater.from(context).inflate(R.layout.empty_document,parent,false));
-        }else {
-            return new not_Empty(LayoutInflater.from(context).inflate(R.layout.shared_document_item,parent,false));
-        }
+       return null;
     }
 
     @SuppressLint ({ "SetTextI18n", "NonConstantResourceId" })
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint ("RecyclerView") int position) {
-        if (holder.getClass() == Empty.class){
-            Empty container=(Empty) holder;
-            container.label.setText("Nothing has been downloaded ! pull down to refresh!");
-            container.label.setGravity(Gravity.CENTER);
-        }else if (holder.getClass() == not_Empty.class){
-            not_Empty container=(not_Empty) holder;
-            try {
-                container.receiver.setVisibility(View.GONE);
-                File file=arrayList.get(position);
-                String name=file.getName();
-                String path=file.getPath();
-                String size=getSize(path);
-                long time=file.lastModified();
-                Date date=new Date(time);
-                @SuppressLint ("SimpleDateFormat") SimpleDateFormat timeFormat=new SimpleDateFormat("hh:mm a");
-                @SuppressLint ("SimpleDateFormat") SimpleDateFormat dateFormat=new SimpleDateFormat("dd:MM:yyyy");
-                String Time=timeFormat.format(date);
-                String mDate= dateFormat.format(date);
-                String finalDate=formatDate(mDate);
-                container.New.setVisibility(View.VISIBLE);
-                container.New.setText("Downloaded");
-                container.name.setSelected(true);
-                container.property.setSelected(true);
-                container.name.setText(name);
-                container.property.setText(String.format("%s | %s | %s",size,Time,finalDate));
-                String[] array =name.split("\\.");
-                String ext=array[array.length-1];
-                int res= IconsHolder.getIcon(ext);
-                container.icon.setImageResource(res);
-                container.option.setOnClickListener(view -> {
-                    PopupMenu popupMenu=new PopupMenu(context,container.option);
-                    popupMenu.getMenuInflater().inflate(R.menu.downloaded_menu,popupMenu.getMenu());
-                    popupMenu.setOnMenuItemClickListener(menuItem -> {
-                        switch (menuItem.getItemId()){
-                            case R.id.Share:
-                                View view3=LayoutInflater.from(context).inflate(R.layout.share_via,null);
-                                AlertDialog dialog=new AlertDialog.Builder(context)
-                                        .setCancelable(false)
-                                        .setTitle("Share Via")
-                                        .setView(view3)
-                                        .setPositiveButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                                        .create();
-                                dialog.show();
-                                LinearLayout layout,layout1;
-                                layout=view3.findViewById(R.id.linear2);
-                                layout1=view3.findViewById(R.id.linear3);
-                                //sharing in this application.
-                                layout.setOnClickListener(view12 -> {
-                                    dialog.dismiss();
-                                    String path1 =arrayList.get(position).getPath();
-                                    File file1=arrayList.get(position);
-                                    String uri=Uri.fromFile(file1).toString();
-                                    Intent intent=new Intent(context, Users.class);
-                                    intent.putExtra("path", path1);
-                                    intent.putExtra("uri",uri);
-                                    context.startActivity(intent);
-                                });
-                                layout1.setOnClickListener(view1 -> {//sharing to other apps.
-                                    dialog.dismiss();
-                                    Intent intent=new Intent(Intent.ACTION_SEND);
-                                    intent.setType("*/*");
-                                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(arrayList.get(position).getPath()));
-                                    context.startActivity(intent);
-                                });
-                                break;
-                            case R.id.Delete:
-                                AlertDialog.Builder builder=new AlertDialog.Builder(context);
-                                builder.setTitle("Delete");
-                                builder.setMessage("Do you want to delete this file ?");
-                                builder.setPositiveButton("Yes", (dialogInterface, i) -> {
-                                    File file1=arrayList.get(position);
-                                    if (file1.delete()){
-                                        dialogInterface.dismiss();
-                                        fragmentActivity.loadData(false);
-                                        Toast.makeText(context, "Deleted successfully!", Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        dialogInterface.dismiss();
-                                        Toast.makeText(context, "Unable to delete", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
-                                builder.setCancelable(false);
-                                builder.show();
-                                break;
-                        }
-                        return true;
-                    });
-                    popupMenu.show();
-                });
-                container.itemView.setOnClickListener(view -> {
-                    Intent intent=new Intent(Intent.ACTION_VIEW);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    Uri uri= FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID+".provider",arrayList.get(position));
-                    intent.setDataAndType(uri,"application/*");
-                    Intent intent2=Intent.createChooser(intent,"Open with..");
-                    //intent2.putExtra(Intent.EXTRA_INITIAL_INTENTS,intent);
-                    try {
-                        context.startActivity(intent2);
-                    }catch (ActivityNotFoundException e){
-                        Toast.makeText(context, "No app found to open this file!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }catch (Exception e){
-                Toast.makeText(context, "Download Adapter : error = "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
 
-        }
     }
     @Override
     public int getItemCount() {
@@ -222,7 +111,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
         TextView label;
         public Empty(@NonNull View itemView) {
             super(itemView);
-            label=itemView.findViewById(R.id.document_info);
         }
 
     }
@@ -232,12 +120,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter {
         ImageView option;
         public not_Empty(@NonNull View itemView) {
             super(itemView);
-            icon=itemView.findViewById(R.id.document_icon);
-            property=itemView.findViewById(R.id.document_property);
-            receiver=itemView.findViewById(R.id.document_receiver);
-            option=itemView.findViewById(R.id.document_option);
-            name=itemView.findViewById(R.id.document_name);
-            New=itemView.findViewById(R.id.newDoc);
         }
 
     }

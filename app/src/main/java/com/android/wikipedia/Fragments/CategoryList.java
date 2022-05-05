@@ -36,10 +36,10 @@ public class CategoryList extends Fragment {
         recyclerView=v.findViewById(R.id.download_rv);
         refreshLayout=v.findViewById(R.id.swipeRefresh2);
         arrayList=new ArrayList<>();
-        adapter=new CategoryListAdapter(requireActivity(),arrayList, CategoryList.this);
+        //adapter=new CategoryListAdapter(requireActivity(),arrayList, CategoryList.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        recyclerView.setAdapter(adapter);
+        //recyclerView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(() -> {
             loadData(true);
             refreshLayout.setRefreshing(false);

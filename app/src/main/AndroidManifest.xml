@@ -19,13 +19,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DocumentSharing"
         tools:ignore="AllowBackup">
-        <activity android:name=".Activities.Settings"></activity>
+        <activity android:name=".Activities.setting"
+            android:label="Setting"></activity>
         <activity
             android:name=".Activities.HomeScreen"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="MissingClass" />
         <activity
             android:name=".Activities.Splash"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

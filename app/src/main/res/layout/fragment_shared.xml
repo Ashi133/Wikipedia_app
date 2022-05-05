@@ -24,7 +24,7 @@
         android:id="@+id/addNew"
         app:civ_border_width="2dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/plus"
+        android:src="@drawable/wikipedia"
         app:civ_border_color="#2196F3"
         android:contentDescription="@null"
         android:layout_height="50dp"/>
