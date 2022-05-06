@@ -31,24 +31,6 @@ public class contentLoader {
         mContext=context;
     }
     public static void loader(String url){
-        RequestQueue requestQueue;
-        requestQueue= Volley.newRequestQueue(mContext);
-        JsonObjectRequest jsonArrayRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    Log.d("Result ====", String.valueOf(response.getJSONObject("query").getJSONObject("pages")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @SuppressLint ("LongLogTag")
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Response == "+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
+
     }
 }
