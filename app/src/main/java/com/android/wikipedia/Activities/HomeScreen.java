@@ -19,7 +19,6 @@ import com.android.wikipedia.Holder.documentHolder;
 import com.android.wikipedia.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -34,9 +33,9 @@ public class HomeScreen extends AppCompatActivity {
     BottomNavigationView navigationView;
     ValueEventListener listener;
     DatabaseReference reference;
-    FirebaseAuth auth;
-    DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
-    StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
+    //FirebaseAuth auth;
+    //DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
+    //StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
     int count=0;
     ArrayList<documentHolder> arrayList;
 
@@ -44,7 +43,7 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
         setContentView(R.layout.activity_home_screen);
-        auth=FirebaseAuth.getInstance();
+        //auth=FirebaseAuth.getInstance();
         arrayList=new ArrayList<>();
         viewPager=findViewById(R.id.viewPager);
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
@@ -136,7 +135,7 @@ public class HomeScreen extends AppCompatActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.settings:
-                new Intent(HomeScreen.this,setting.class);
+                startActivity(new Intent(HomeScreen.this,setting.class));
                 break;
         }
         return true;

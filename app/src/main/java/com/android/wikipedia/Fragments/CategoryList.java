@@ -32,14 +32,13 @@ public class CategoryList extends Fragment {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v;
-        v = layoutInflater.inflate(R.layout.fragment_downloaded, viewGroup, false);
+        v = layoutInflater.inflate(R.layout.category_list_fragment, viewGroup, false);
         recyclerView=v.findViewById(R.id.download_rv);
         refreshLayout=v.findViewById(R.id.swipeRefresh2);
         arrayList=new ArrayList<>();
-        //adapter=new CategoryListAdapter(requireActivity(),arrayList, CategoryList.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        //recyclerView.setAdapter(adapter);
+        recyclerView.hideShimmerAdapter();
         refreshLayout.setOnRefreshListener(() -> {
             loadData(true);
             refreshLayout.setRefreshing(false);
@@ -93,7 +92,6 @@ public class CategoryList extends Fragment {
                 }
             }
         }
-        adapter.notifyDataSetChanged();
         new Handler().postDelayed(() -> {
             if (!b){
              if (arrayList.size() >0){

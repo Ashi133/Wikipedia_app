@@ -3,7 +3,10 @@ package com.android.wikipedia.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
@@ -13,6 +16,7 @@ import com.android.wikipedia.databinding.ActivitySettingBinding;
 public class setting extends AppCompatActivity {
 ActivitySettingBinding binding;
 Switch darkTheme,lightTheme;
+    @SuppressLint ("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,28 +24,36 @@ Switch darkTheme,lightTheme;
         setContentView(binding.getRoot());
         darkTheme=binding.switch1;
         lightTheme=binding.switch2;
-        //AppCompatDelegate.setDefaultNightMode();
-        int theme=UpdateTheme.getTheme("dark",setting.this);
-        if (theme == 0){
-            darkTheme.setChecked(false);
-            if ((UpdateTheme.getTheme("light",setting.this))==0){
-                lightTheme.setChecked(false);
-            }else{
-                lightTheme.setChecked(true);
-            }
-        }else{
+        int theme1=UpdateTheme.getTheme("dark",setting.this);
+        int theme2=UpdateTheme.getTheme("light",setting.this);
+        if (theme1 == 2){
             darkTheme.setChecked(true);
+            binding.darkTheme.setTextColor(Color.WHITE);
+            binding.lightTheme.setTextColor(Color.WHITE);
             lightTheme.setChecked(false);
+        }else if (theme2==1){
+            darkTheme.setChecked(false);
+            lightTheme.setChecked(true);
+            binding.lightTheme.setTextColor(Color.BLACK);
+            binding.darkTheme.setTextColor(Color.BLACK);
         }
         darkTheme.setOnCheckedChangeListener((compoundButton, b) -> {
-            UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
-            darkTheme.setChecked(b);
-            lightTheme.setChecked(false);
+            if (darkTheme.isChecked()){
+                UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
+                UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
+                darkTheme.setChecked(b);
+                lightTheme.setChecked(!b);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
         });
         lightTheme.setOnCheckedChangeListener((compoundButton, b) -> {
-            UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
-            darkTheme.setChecked(false);
-            lightTheme.setChecked(b);
+            if (lightTheme.isChecked()){
+                UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
+                UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
+                darkTheme.setChecked(!b);
+                lightTheme.setChecked(b);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
         });
     }
 }
