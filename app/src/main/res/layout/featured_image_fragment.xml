@@ -8,9 +8,10 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh1"
         android:layout_width="match_parent"
+        android:layout_margin="3dp"
         android:layout_height="match_parent">
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-            android:id="@+id/receive_rv"
+            android:id="@+id/featuredImage_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

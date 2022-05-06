@@ -15,15 +15,13 @@ import com.android.wikipedia.Adapter.*;
 import com.android.wikipedia.Fragments.CategoryList;
 import com.android.wikipedia.Fragments.FeaturedImage;
 import com.android.wikipedia.Fragments.Articles;
-import com.android.wikipedia.Holder.documentHolder;
+import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 @SuppressWarnings ("ALL")
@@ -37,7 +35,7 @@ public class HomeScreen extends AppCompatActivity {
     //DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
     //StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
     int count=0;
-    ArrayList<documentHolder> arrayList;
+    ArrayList<Holder> arrayList;
 
     @Override
     protected void onCreate(Bundle saved){
