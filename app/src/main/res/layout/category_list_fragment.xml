@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView
             android:id="@+id/download_rv"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

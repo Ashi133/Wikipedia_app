@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.wikipedia.Activities.preview;
+import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import com.android.wikipedia.UpdateTheme;
@@ -50,6 +51,29 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Viewho
                 intent.putExtra("content",arrayList.get(position).getContent());
                 intent.putExtra("flag",true);
                 context.startActivity(intent);
+            }
+        });
+        holder.mContent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Download")
+                        .setCancelable(false)
+                        .setMessage("Do you want to download this file?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String path=downloadFile.download(arrayList.get(position).getTitle(),context,arrayList.get(position).getUrl(),"Images");
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).show();
+                return false;
             }
         });
     }

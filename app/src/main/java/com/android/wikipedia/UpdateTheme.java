@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
 public class UpdateTheme {
     public static String FOLDER="Theme";
     public static int getTheme(String key, Context context){
-        return context.getSharedPreferences(FOLDER,Context.MODE_PRIVATE).getInt(key,0);
+        return context.getSharedPreferences(FOLDER,Context.MODE_PRIVATE).getInt(key,1);
     }
     public static void setTheme(String key,int value,Context context){
         SharedPreferences sharedPreferences= context.getSharedPreferences(FOLDER,Context.MODE_PRIVATE);

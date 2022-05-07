@@ -9,6 +9,7 @@
         android:id="@+id/articleContent"
         android:layout_width="match_parent"
         android:layout_height="250dp"
+        android:background="@color/white"
         android:scrollbars="vertical"
         android:ellipsize="end"
         android:gravity="center_horizontal|center_vertical"

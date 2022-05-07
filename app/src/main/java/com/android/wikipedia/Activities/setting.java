@@ -26,12 +26,14 @@ Switch darkTheme,lightTheme;
         lightTheme=binding.switch2;
         int theme1=UpdateTheme.getTheme("dark",setting.this);
         int theme2=UpdateTheme.getTheme("light",setting.this);
+        Log.d("Value === ",theme1+" ===="+theme2);
         if (theme1 == 2){
             darkTheme.setChecked(true);
             binding.darkTheme.setTextColor(Color.WHITE);
             binding.lightTheme.setTextColor(Color.WHITE);
             lightTheme.setChecked(false);
-        }else if (theme2==1){
+        }
+        if (theme2==1){
             darkTheme.setChecked(false);
             lightTheme.setChecked(true);
             binding.lightTheme.setTextColor(Color.BLACK);
@@ -40,19 +42,21 @@ Switch darkTheme,lightTheme;
         darkTheme.setOnCheckedChangeListener((compoundButton, b) -> {
             if (darkTheme.isChecked()){
                 UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
-                UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
                 darkTheme.setChecked(b);
                 lightTheme.setChecked(!b);
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else {
+                UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
             }
         });
         lightTheme.setOnCheckedChangeListener((compoundButton, b) -> {
             if (lightTheme.isChecked()){
                 UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
-                UpdateTheme.setTheme("dark", AppCompatDelegate.MODE_NIGHT_NO,setting.this);
                 darkTheme.setChecked(!b);
                 lightTheme.setChecked(b);
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }else{
+                UpdateTheme.setTheme("light", AppCompatDelegate.MODE_NIGHT_YES,setting.this);
             }
         });
     }
