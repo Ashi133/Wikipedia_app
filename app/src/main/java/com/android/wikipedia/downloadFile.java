@@ -10,17 +10,22 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -32,14 +37,15 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     private static final long BYTE_SIZE = 524288000;
     @SuppressLint ("StaticFieldLeak")
     public static Context mContext;
-    public static String mName,mUrl;
+    public static String mName,mUrl,mType;
     @SuppressLint ("StaticFieldLeak")
     private static NotificationManagerCompat compat;
 
-    public static void download(String name,Context context,String url){
+    public static void download(String name,Context context,String url,String type){
         mContext=context;
         mName=name;
         mUrl=url;
+        mType=type;
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         && ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE },25);
@@ -48,32 +54,56 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         }
     }
     private static void downloadDocument() {
-        StorageReference st= FirebaseStorage.getInstance().getReferenceFromUrl(mUrl);
-        File f= new File(Environment.getExternalStorageDirectory() + File.separator + "Document Sharing");
+        File f= new File(Environment.getExternalStorageDirectory() + File.separator + "Wikipedia");
         if (!f.exists() && !f.isDirectory()){
             if (f.mkdir()){
                 Toast.makeText(mContext, "Directory created!", Toast.LENGTH_SHORT).show();
             }
         }
-        String folder = Environment.getExternalStorageDirectory() + File.separator + "Document Sharing" + File.separator + mName;
+        File f1=new File(Environment.getExternalStorageDirectory()+File.separator+"Wikipedia"+File.separator+mType);
+        if (!f1.exists() && !f1.isDirectory()){
+            if (f1.mkdir()){
+                Toast.makeText(mContext, "Sub Directory created!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        String folder="";
+        if (mType.equalsIgnoreCase("Texts")){
+            folder = Environment.getExternalStorageDirectory() + File.separator + "Wikipedia"+File.separator+mType + File.separator + mName+".txt";
+        }else{
+            folder = Environment.getExternalStorageDirectory() + File.separator + "Wikipedia"+File.separator+mType + File.separator + mName;
+        }
         File file=new File(folder);
         if (!file.isFile() && !file.exists()){
             popUpNotification(mName);
-            st.getBytes(BYTE_SIZE).addOnSuccessListener(bytes -> {
-                try {
-                    file.createNewFile();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    fos.write(bytes);
+            try {
+                file.createNewFile();
+                FileOutputStream fos = new FileOutputStream(file);
+                //downloading logic goes here
+                if (mType.equalsIgnoreCase("Texts")){
+                    fos.write(mUrl.getBytes());
                     fos.flush();
                     fos.close();
-                    compat.cancel(123);
-                    Toast.makeText(mContext, "Downloaded successfully at " + file, Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    compat.cancel(123);
-                    Log.e("Download error =",e.getLocalizedMessage());
-                    e.printStackTrace();
+                }else{
+                        Glide.with(mContext).asBitmap().load(mUrl).into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                resource.compress(Bitmap.CompressFormat.JPEG,100,fos);
+                                try {
+                                    fos.flush();
+                                    fos.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 }
-            });
+                compat.cancel(123);
+                Toast.makeText(mContext, "Downloaded successfully at " + file, Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                compat.cancel(123);
+                Log.e("Download error =", e.getLocalizedMessage());
+                e.printStackTrace();
+            }
         }else {
             Toast.makeText(mContext, "File already exists!", Toast.LENGTH_SHORT).show();
         }

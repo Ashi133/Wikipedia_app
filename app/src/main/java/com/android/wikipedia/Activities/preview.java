@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -20,15 +22,26 @@ public class preview extends AppCompatActivity {
         binding=ActivityPreviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initializeWebView();
-        String url=getIntent().getStringExtra("url");
         String title=getIntent().getStringExtra("title");
+        boolean flag=getIntent().getBooleanExtra("flag",false);
         if (title.length()>0){
             this.setTitle(title);
         }else {
             this.setTitle("Preview");
         }
-        if (url.length()>0){
-            binding.webView.loadUrl(url);
+        if (flag){
+            binding.textView.setVisibility(View.VISIBLE);
+            binding.webView.setVisibility(View.GONE);
+            binding.textView.setMovementMethod(new ScrollingMovementMethod());
+            String content=getIntent().getStringExtra("content");
+            binding.textView.setText(content);
+        }else{
+            binding.textView.setVisibility(View.GONE);
+            binding.webView.setVisibility(View.VISIBLE);
+            String url=getIntent().getStringExtra("url");
+            if (url.length()>0){
+                binding.webView.loadUrl(url);
+            }
         }
     }
 

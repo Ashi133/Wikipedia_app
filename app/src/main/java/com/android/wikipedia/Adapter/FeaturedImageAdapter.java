@@ -1,6 +1,8 @@
 package com.android.wikipedia.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.wikipedia.Activities.preview;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
+import com.android.wikipedia.downloadFile;
 import com.bumptech.glide.Glide;
 
 import java.lang.annotation.Target;
@@ -54,7 +57,31 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
                 Intent intent=new Intent(context, preview.class);
                 intent.putExtra("title",arrayList.get(position).getTitle());
                 intent.putExtra("url",arrayList.get(position).getDescriptionUrl());
+                intent.putExtra("flag",false);
                 context.startActivity(intent);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Download")
+                        .setCancelable(false)
+                        .setMessage("Do you want to download this file?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                downloadFile.download(arrayList.get(position).getTitle(), context, arrayList.get(position).getUrl(),"images");
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        }).show();
+                return false;
             }
         });
     }

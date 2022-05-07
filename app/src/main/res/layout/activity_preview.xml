@@ -10,4 +10,14 @@
         android:layout_height="match_parent"
         android:id="@+id/webView"
         android:layout_margin="3dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/textView"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:scrollbars="vertical"
+        android:gravity="center_vertical|start"
+        android:padding="8dp"
+        android:textColor="#2196F3"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
