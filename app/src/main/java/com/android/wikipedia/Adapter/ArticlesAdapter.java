@@ -1,6 +1,8 @@
 package com.android.wikipedia.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.wikipedia.Activities.preview;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Viewho
             super(itemView);
             mTitle=itemView.findViewById(R.id.articleTitle);
             mContent=itemView.findViewById(R.id.articleContent);
+            mContent.setMovementMethod(new ScrollingMovementMethod());
         }
 
     }

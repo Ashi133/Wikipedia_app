@@ -1,6 +1,7 @@
 package com.android.wikipedia.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.wikipedia.Activities.preview;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import com.bumptech.glide.Glide;
@@ -45,6 +48,15 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
         }catch (Exception e){
             Log.e("Load error =",e.getLocalizedMessage());
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, preview.class);
+                intent.putExtra("title",arrayList.get(position).getTitle());
+                intent.putExtra("url",arrayList.get(position).getDescriptionUrl());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

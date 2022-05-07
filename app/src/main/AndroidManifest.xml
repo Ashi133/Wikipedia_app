@@ -13,15 +13,19 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/wikipedia"
-        android:usesCleartextTraffic="true"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/wikipedia"
         android:supportsRtl="true"
         android:theme="@style/Theme.DocumentSharing"
+        android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute">
-        <activity android:name=".Activities.setting"
-            android:label="Setting"/>
+        <activity
+            android:name=".Activities.preview"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.setting"
+            android:label="Setting" />
         <activity
             android:name=".Activities.HomeScreen"
             android:exported="false"
