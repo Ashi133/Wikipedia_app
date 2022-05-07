@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-rootProject.name = "Document Sharing"
+rootProject.name = "Wikipedia App"
 include ':app'

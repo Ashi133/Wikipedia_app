@@ -26,7 +26,7 @@ public class Splash extends AppCompatActivity {
         final TypeWriter tw = findViewById(R.id.type_writer);
         tw.setText("");
         tw.setCharacterDelay(35);
-        tw.animateText("Developed By:\n Ashi Agrawal");
+        tw.animateText("Developed By:\nAshi Agrawal");
         new Handler().postDelayed(() -> {
             startActivity(new Intent(Splash.this, HomeScreen.class));
             finish();

@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.wikipedia.Adapter.FeaturedImageAdapter;
@@ -27,7 +26,6 @@ import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import com.android.wikipedia.UpdateTheme;
-import com.android.wikipedia.downloadFile;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;

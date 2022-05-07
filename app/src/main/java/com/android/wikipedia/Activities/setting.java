@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.android.wikipedia.UpdateTheme;
@@ -15,6 +14,7 @@ import com.android.wikipedia.databinding.ActivitySettingBinding;
 
 public class setting extends AppCompatActivity {
 ActivitySettingBinding binding;
+@SuppressLint ("UseSwitchCompatOrMaterialCode")
 Switch darkTheme,lightTheme;
     @SuppressLint ("LongLogTag")
     @Override

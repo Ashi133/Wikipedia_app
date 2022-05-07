@@ -6,11 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Splash">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:contentDescription="@null"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/teal_700"
         android:src="@drawable/wikipedia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

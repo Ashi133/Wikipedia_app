@@ -14,10 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.wikipedia.Activities.preview;
-import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
-import com.android.wikipedia.UpdateTheme;
 import com.android.wikipedia.downloadFile;
 
 import java.util.ArrayList;

@@ -31,9 +31,6 @@ public class HomeScreen extends AppCompatActivity {
     BottomNavigationView navigationView;
     ValueEventListener listener;
     DatabaseReference reference;
-    //FirebaseAuth auth;
-    //DatabaseReference database=FirebaseDatabase.getInstance().getReference().child("DocumentSharing");
-    //StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("Documents");
     int count=0;
     ArrayList<Holder> arrayList;
 
@@ -41,7 +38,6 @@ public class HomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle saved){
         super.onCreate(saved);
         setContentView(R.layout.activity_home_screen);
-        //auth=FirebaseAuth.getInstance();
         arrayList=new ArrayList<>();
         viewPager=findViewById(R.id.viewPager);
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());

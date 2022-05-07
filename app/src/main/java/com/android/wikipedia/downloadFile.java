@@ -26,17 +26,11 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.xml.xpath.XPath;
-
 public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private static final long BYTE_SIZE = 524288000;
     @SuppressLint ("StaticFieldLeak")
     public static Context mContext;
     public static String mName,mUrl,mType;
@@ -70,7 +64,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
                 Toast.makeText(mContext, "Sub Directory created!", Toast.LENGTH_SHORT).show();
             }
         }
-        String folder="";
+        String folder;
         if (mType.equalsIgnoreCase("Texts")){
             folder = Environment.getExternalStorageDirectory() + File.separator + "Wikipedia"+File.separator+mType + File.separator + mName+".txt";
         }else{

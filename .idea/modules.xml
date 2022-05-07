@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Document_Sharing.iml" filepath="$PROJECT_DIR$/.idea/modules/Document_Sharing.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Document_Sharing.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Document_Sharing.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Wikipedia_App.iml" filepath="$PROJECT_DIR$/.idea/modules/Wikipedia_App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Wikipedia_App.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Wikipedia_App.app.iml" />
     </modules>
   </component>
 </project>

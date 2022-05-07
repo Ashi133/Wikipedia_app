@@ -22,7 +22,6 @@ import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import com.android.wikipedia.UpdateTheme;
-import com.android.wikipedia.downloadFile;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -31,8 +30,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
-import javax.xml.xpath.XPath;
 
 public class Articles extends Fragment {
     ArticlesAdapter adapter;

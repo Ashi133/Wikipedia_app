@@ -1,6 +1,4 @@
 package com.android.wikipedia.Fragments;
-
-import static androidx.core.util.ObjectsCompat.requireNonNull;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
@@ -11,8 +9,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.os.Environment;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,18 +21,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.android.wikipedia.Adapter.CategoryListAdapter;
+//import com.android.wikipedia.Adapter.CategoryListAdapter;
 import com.android.wikipedia.R;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-
+@SuppressWarnings("ALL")
 public class CategoryList extends Fragment {
-    CategoryListAdapter adapter;
+    //CategoryListAdapter adapter;
     ArrayList<File> arrayList;
     ShimmerRecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
