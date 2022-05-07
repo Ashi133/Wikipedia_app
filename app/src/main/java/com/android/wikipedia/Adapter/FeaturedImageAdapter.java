@@ -15,6 +15,7 @@ import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 import com.bumptech.glide.Glide;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
@@ -40,7 +41,7 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
         holder.mTitle.setText(title);
         //loading an image from a server we use glide third party library.
         try{
-            Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia).into(holder.imageView);
+            Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia).override(680,680).into(holder.imageView);
         }catch (Exception e){
             Log.e("Load error =",e.getLocalizedMessage());
         }

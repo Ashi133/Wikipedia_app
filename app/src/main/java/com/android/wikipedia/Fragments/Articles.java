@@ -57,7 +57,6 @@ public class Articles extends Fragment {
         SwipeRefreshLayout refreshLayout=view.findViewById(R.id.swipeRefresh);
         loadArticle();
         refreshLayout.setOnRefreshListener(this::loadArticle);
-        //String featuredImageUrl="https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=timestamp|user|url&generator=categorymembers&gcmtype=file&gcmtitle=Category:Featured_pictures_on_Wikimedia_Commons&format=json&utf8";
         //String categoryListUrl="https://en.wikipedia.org/w/api.php?action=query&list=allcategories&acprefix=List%20of&formatversion=2";
 
         return view;
@@ -88,6 +87,7 @@ public class Articles extends Fragment {
     }
 
     private void fetchdata(String url) {
+        arrayList.clear();
         RequestQueue requestQueue;
         requestQueue= Volley.newRequestQueue(requireActivity());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url,new Response.Listener<String>() {
@@ -101,13 +101,13 @@ public class Articles extends Fragment {
                     JSONArray array=object.names();
                     JSONObject object1=object.getJSONObject(array.get(0).toString());
                     String title=object1.getString("title");
-                    Log.d("Response result=", String.valueOf(object1));
+                    //Log.d("Response result=", String.valueOf(object1));
                     Toast.makeText(requireActivity(), "Title="+title, Toast.LENGTH_LONG).show();
 
 
 
-                    String content=object1.getString("*");
-                    Toast.makeText(requireActivity(), "Content="+content, Toast.LENGTH_LONG).show();
+                    //String content=object1.getString("*");
+                    //Toast.makeText(requireActivity(), "Content="+content, Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
