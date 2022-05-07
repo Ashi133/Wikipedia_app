@@ -33,15 +33,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.xml.xpath.XPath;
+
 public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final long BYTE_SIZE = 524288000;
     @SuppressLint ("StaticFieldLeak")
     public static Context mContext;
     public static String mName,mUrl,mType;
+    public static String path="";
     @SuppressLint ("StaticFieldLeak")
     private static NotificationManagerCompat compat;
 
-    public static void download(String name,Context context,String url,String type){
+    public static String download(String name,Context context,String url,String type){
         mContext=context;
         mName=name;
         mUrl=url;
@@ -50,10 +53,11 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         && ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions((Activity) context, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE },25);
         }else {
-            downloadDocument();
+            path=downloadDocument();
         }
+        return path;
     }
-    private static void downloadDocument() {
+    private static String downloadDocument() {
         File f= new File(Environment.getExternalStorageDirectory() + File.separator + "Wikipedia");
         if (!f.exists() && !f.isDirectory()){
             if (f.mkdir()){
@@ -107,6 +111,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
         }else {
             Toast.makeText(mContext, "File already exists!", Toast.LENGTH_SHORT).show();
         }
+        return file.toString();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

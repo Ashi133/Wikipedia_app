@@ -22,8 +22,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.wikipedia.Adapter.FeaturedImageAdapter;
 
+import com.android.wikipedia.Database.DatabaseManager;
+import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
+import com.android.wikipedia.UpdateTheme;
+import com.android.wikipedia.downloadFile;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -38,11 +42,13 @@ public class FeaturedImage extends Fragment {
     ArrayList<Holder> arrayList;
     ShimmerRecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
+    DatabaseManager databaseManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.featured_image_fragment, container, false);
+        databaseManager=DatabaseManager.getINSTANCE(requireActivity());
         recyclerView=view.findViewById(R.id.featuredImage_rv);
         refreshLayout=view.findViewById(R.id.swipeRefresh1);
         recyclerView.setHasFixedSize(true);
@@ -69,9 +75,27 @@ public class FeaturedImage extends Fragment {
         Holder holder=new Holder();
         holder.setTitle("Flower");
         String featuredImageUrl="https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=timestamp|user|url&generator=categorymembers&gcmtype=file&gcmtitle=Category:Featured_pictures_on_Wikimedia_Commons&format=json&utf8";
-        fetchdata(featuredImageUrl);
+        if (UpdateTheme.check_network_state(requireActivity())){
+            fetchdata(featuredImageUrl);
+        }else{
+            loadFromDatabase();
+        }
         new Handler().postDelayed(() -> recyclerView.hideShimmerAdapter(), 1500);
         refreshLayout.setRefreshing(true);
+    }
+
+    @SuppressLint ("NotifyDataSetChanged")
+    private void loadFromDatabase() {
+        arrayList.clear();
+        ArrayList<Entities> temp = new ArrayList<>(databaseManager.dao().getAllData());
+        for (Entities entities:temp){
+            Holder holder=new Holder();
+            holder.setTitle(entities.getTitle());
+            holder.setPath(entities.getUrl());
+            arrayList.add(holder);
+        }
+        refreshLayout.setRefreshing(false);
+        adapter.notifyDataSetChanged();
     }
 
     public void search(String text) {
@@ -104,12 +128,12 @@ public class FeaturedImage extends Fragment {
                     JSONObject jsonObject1= (JSONObject) jsonArray.get(0);
                     String url1 =jsonObject1.getString("url");
                     String descriptionUrl=jsonObject1.getString("descriptionurl");
-                    //Log.d("des===",descriptionUrl);
                     Holder holder=new Holder();
                     holder.setTitle(title);
                     holder.setUrl(url1);
                     holder.setDescriptionUrl(descriptionUrl);
                     arrayList.add(holder);
+
                 }
                 adapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);

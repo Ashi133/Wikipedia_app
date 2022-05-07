@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.wikipedia.Activities.preview;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
+import com.android.wikipedia.UpdateTheme;
 import com.android.wikipedia.downloadFile;
 
 import java.util.ArrayList;
@@ -41,29 +42,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Viewho
         String content=arrayList.get(position).getContent();
         holder.mTitle.setText(title);
         holder.mContent.setText(content);
-        holder.mContent.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Download")
-                        .setCancelable(false)
-                        .setMessage("Do you want to download this file?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadFile.download(arrayList.get(position).getTitle(), context,arrayList.get(position).getContent(),"Texts");
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
-                return false;
-            }
-        });
         holder.mContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

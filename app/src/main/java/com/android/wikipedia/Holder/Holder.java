@@ -1,7 +1,15 @@
 package com.android.wikipedia.Holder;
 
 public class Holder {
-String title,content,url,descriptionUrl;
+String title,content,url,descriptionUrl,path;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public String getDescriptionUrl() {
         return descriptionUrl;

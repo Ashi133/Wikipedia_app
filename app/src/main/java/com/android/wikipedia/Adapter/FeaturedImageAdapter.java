@@ -16,19 +16,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.wikipedia.Activities.preview;
+import com.android.wikipedia.Database.DatabaseManager;
+import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
+import com.android.wikipedia.UpdateTheme;
 import com.android.wikipedia.downloadFile;
 import com.bumptech.glide.Glide;
-
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
 public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdapter.viewHolder> {
     ArrayList<Holder> arrayList;
     Context context;
-
+    DatabaseManager manager;
     public FeaturedImageAdapter(Context context,ArrayList<Holder> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
@@ -43,47 +44,59 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         String title=arrayList.get(position).getTitle();
-        String url=arrayList.get(position).getUrl();
-        holder.mTitle.setText(title);
-        //loading an image from a server we use glide third party library.
-        try{
-            Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia).override(680,680).into(holder.imageView);
-        }catch (Exception e){
-            Log.e("Load error =",e.getLocalizedMessage());
+        manager=DatabaseManager.getINSTANCE(context);
+        if (UpdateTheme.check_network_state(context)){
+            String url=arrayList.get(position).getUrl();
+            holder.mTitle.setText(title);
+            //loading an image from a server we use glide third party library.
+            try{
+                Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia).override(680,680).into(holder.imageView);
+            }catch (Exception e){
+                Log.e("Load error =",e.getLocalizedMessage());
+            }
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Download")
+                            .setCancelable(false)
+                            .setMessage("Do you want to download this file?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String title=arrayList.get(position).getTitle();
+                                    String path= downloadFile.download(title,context,arrayList.get(position).getUrl(),"Images");
+                                    Entities entities=new Entities(title,path);
+                                    manager.dao().insertData(entities);
+                                    arrayList.get(position).setPath(path);
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
+                    return false;
+                }
+            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(context, preview.class);
+                    intent.putExtra("title",arrayList.get(position).getTitle());
+                    intent.putExtra("url",arrayList.get(position).getDescriptionUrl());
+                    intent.putExtra("flag",false);
+                    context.startActivity(intent);
+                }
+            });
+        }else{
+            String uri=arrayList.get(position).getPath();
+            holder.mTitle.setText(title);
+            holder.imageView.setImageURI(Uri.parse(uri));
         }
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(context, preview.class);
-                intent.putExtra("title",arrayList.get(position).getTitle());
-                intent.putExtra("url",arrayList.get(position).getDescriptionUrl());
-                intent.putExtra("flag",false);
-                context.startActivity(intent);
-            }
-        });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Download")
-                        .setCancelable(false)
-                        .setMessage("Do you want to download this file?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                downloadFile.download(arrayList.get(position).getTitle(), context, arrayList.get(position).getUrl(),"images");
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
-                return false;
-            }
-        });
+
     }
 
     @Override

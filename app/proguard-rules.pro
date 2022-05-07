@@ -20,3 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keepclassmembers class com.android.wikipedia.Holder.**{*;}
+-keepclassmembers class com.android.wikipedia.Database.**{*;}

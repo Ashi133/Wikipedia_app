@@ -31,7 +31,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03906ee5-c0b4-4a81-ab9b-ebf32c23bb28" name="Default Changelist" comment="Wikipedia-0.0.9">
+    <list default="true" id="03906ee5-c0b4-4a81-ab9b-ebf32c23bb28" name="Default Changelist" comment="Wikipedia-0.1.0">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_room_room_common_2_3_0_alpha03.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_room_room_runtime_2_3_0_alpha03_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_sqlite_sqlite_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_sqlite_sqlite_framework_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Database/DAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Database/DatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Database/Entities.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/fileHashes/fileHashes.bin" afterDir="false" />
@@ -42,16 +49,22 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app/Document_Sharing.app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/app/Document_Sharing.app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Activities/preview.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Activities/preview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/ArticlesAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/ArticlesAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/FeaturedImageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/FeaturedImageAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/Articles.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/Articles.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/HttpTrustManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/contentLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/CategoryList.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/CategoryList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/FeaturedImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/FeaturedImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Holder/Holder.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Holder/Holder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/UpdateTheme.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/UpdateTheme.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/downloadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/downloadFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_preview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_preview.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +131,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Database" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="show.do.not.copy.http.proxy.settings.to.gradle" value="true" />
   </component>
@@ -128,6 +141,9 @@
     </key>
     <key name="android.template.-2063740791">
       <recent name="com.android.wikipedia.Activities" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Androd Project\Wikipedia_app\app\src\main\java\com\android\wikipedia\Database" />
     </key>
     <key name="android.template.-883703632">
       <recent name="com.android.wikipedia.Activities" />
@@ -282,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651900541353</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Wikipedia-0.1.0">
+      <created>1651908050788</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1651908050789</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -312,6 +335,7 @@
     <MESSAGE value="Wikipedia-0.0.7" />
     <MESSAGE value="Wikipedia-0.0.8" />
     <MESSAGE value="Wikipedia-0.0.9" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wikipedia-0.0.9" />
+    <MESSAGE value="Wikipedia-0.1.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wikipedia-0.1.0" />
   </component>
 </project>

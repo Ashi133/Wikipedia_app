@@ -17,8 +17,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.wikipedia.Adapter.ArticlesAdapter;
+import com.android.wikipedia.Database.DatabaseManager;
+import com.android.wikipedia.Database.Entities;
 import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
+import com.android.wikipedia.UpdateTheme;
+import com.android.wikipedia.downloadFile;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -28,19 +32,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.xml.xpath.XPath;
+
 public class Articles extends Fragment {
     ArticlesAdapter adapter;
-    //ArrayList<Holder> arrayList;
     ShimmerRecyclerView recyclerView;
     SwipeRefreshLayout refreshLayout;
     ArrayList<Holder> arrayList;
-    //FirebaseAuth auth;
+    DatabaseManager databaseManager;
     @SuppressLint ("LongLogTag")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.articles_fragment, container, false);
+        databaseManager=DatabaseManager.getINSTANCE(requireActivity());
         recyclerView=view.findViewById(R.id.article_rv);
         refreshLayout=view.findViewById(R.id.swipeRefresh);
         recyclerView.setHasFixedSize(true);
@@ -51,7 +57,6 @@ public class Articles extends Fragment {
         SwipeRefreshLayout refreshLayout=view.findViewById(R.id.swipeRefresh);
         loadArticle();
         refreshLayout.setOnRefreshListener(this::loadArticle);
-        //String categoryListUrl="https://en.wikipedia.org/w/api.php?action=query&list=allcategories&acprefix=List%20of&formatversion=2";
         return view;
     }
 
@@ -60,9 +65,27 @@ public class Articles extends Fragment {
         recyclerView.showShimmerAdapter();
         //loading of article logic goes here.
         String articleUrl="https://en.wikipedia.org/w/api.php?format=json&action=query&generator=random&grnnamespace=0&prop=revisions|images&rvprop=content&grnlimit=10";
-        fetchdata(articleUrl);
+        if (UpdateTheme.check_network_state(requireActivity())){
+            fetchdata(articleUrl);
+        }else{
+            loadFromDatabase();
+        }
         new Handler().postDelayed(() -> recyclerView.hideShimmerAdapter(), 1500);
         refreshLayout.setRefreshing(true);
+    }
+
+    @SuppressLint ("NotifyDataSetChanged")
+    private void loadFromDatabase() {
+        arrayList.clear();
+        ArrayList<Entities> temp = new ArrayList<>(databaseManager.dao().getAllData());
+        for (Entities entities:temp){
+            Holder holder=new Holder();
+            holder.setTitle(entities.getTitle());
+            holder.setUrl(entities.getUrl());
+            arrayList.add(holder);
+        }
+        refreshLayout.setRefreshing(false);
+        adapter.notifyDataSetChanged();
     }
 
     private void fetchdata(String url) {
@@ -82,6 +105,8 @@ public class Articles extends Fragment {
                     JSONObject jsonObject1= (JSONObject) jsonArray.get(0);
                     String content=jsonObject1.getString("*");
                     Holder holder=new Holder(title,content);
+                    Entities entities=new Entities(title,content);
+                    databaseManager.dao().insertData(entities);
                     arrayList.add(holder);
                 }
                 adapter.notifyDataSetChanged();

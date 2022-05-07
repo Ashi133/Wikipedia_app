@@ -13,13 +13,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.android.wikipedia.Adapter.CategoryListAdapter;
 import com.android.wikipedia.R;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -38,9 +50,8 @@ public class CategoryList extends Fragment {
         arrayList=new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        recyclerView.hideShimmerAdapter();
         refreshLayout.setOnRefreshListener(() -> {
-            loadData(true);
+            loadCategory();
             refreshLayout.setRefreshing(false);
         });
         return v;
@@ -50,70 +61,54 @@ public class CategoryList extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && isResumed()){
-            loadData(true);
+            loadData();
         }
     }
 
-    public void loadData(boolean b) {
+    public void loadData() {
         if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
         && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE },23);
         }else {
-            recyclerView.showShimmerAdapter();
-            //loading downloaded file here.
-            findFiles(!b);
+            loadCategory();
         }
     }
+
+    private void loadCategory() {
+        recyclerView.hideShimmerAdapter();
+        String categoryUrl="https://en.wikipedia.org/w/api.php?action=query&list=allcategories&acprefix=List%20of&formatversion=2";
+        RequestQueue requestQueue;
+        requestQueue= Volley.newRequestQueue(requireActivity());
+        StringRequest request=new StringRequest(Request.Method.GET, categoryUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //JSONObject jsonObject=new JSONObject(response);
+                Log.d("category =======", String.valueOf(response));
+
+            }
+        }, new Response.ErrorListener() {
+            @SuppressLint ("LongLogTag")
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("category list:volley error=",error.getLocalizedMessage());
+            }
+        });
+        requestQueue.add(request);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 23){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                loadData(true);
+                loadData();
             }else {
                 Toast.makeText(requireActivity(), "Permission required!", Toast.LENGTH_SHORT).show();
             }
         }
     }
-    @SuppressLint ("NotifyDataSetChanged")
-    public void findFiles(boolean b) {
-        arrayList.clear();
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "Document Sharing");
-        if (!file.exists() && ! file.isDirectory()){
-            if (file.mkdir()){
-                Toast.makeText(requireActivity(), "Folder Document Sharing created successfully!", Toast.LENGTH_SHORT).show();
-            }
-        }
-        File[] files = file.listFiles();
-        if (files != null){
-            for (File file1 : requireNonNull(files)) {
-                if (!file1.isHidden()) {
-                    arrayList.add(file1);
-                }
-            }
-        }
-        new Handler().postDelayed(() -> {
-            if (!b){
-             if (arrayList.size() >0){
-                 Toast.makeText(requireActivity(), "File Loaded Successfully!", Toast.LENGTH_SHORT).show();
-             }
-            }
-            recyclerView.hideShimmerAdapter();
-        }, 1000);
-    }
-
     public void search(String text) {
-        ArrayList<File> temp=new ArrayList<>();
-        if (text.isEmpty()){
-            temp.addAll(arrayList);
-        }else {
-            for (File holder:arrayList){
-                if (holder.getName().toLowerCase().contains(text)){
-                    temp.add(holder);
-                }
-            }
-        }
-        adapter.updateList(temp);
+
     }
 
 }
