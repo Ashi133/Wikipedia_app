@@ -75,7 +75,17 @@ public class FeaturedImage extends Fragment {
     }
 
     public void search(String text) {
-
+        ArrayList<Holder> temp=new ArrayList<>();
+        if (text.length()>0){
+            for (Holder holder:arrayList){
+                if (holder.getTitle().toLowerCase().contains(text.toLowerCase())){
+                    temp.add(holder);
+                }
+            }
+        }else {
+            temp.addAll(arrayList);
+        }
+        adapter.update(temp);
     }
     private void fetchdata(String url) {
         RequestQueue requestQueue;

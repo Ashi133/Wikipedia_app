@@ -41,6 +41,11 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Viewho
         return arrayList.size();
     }
 
+    public void update(ArrayList<Holder> temp) {
+        arrayList=temp;
+        notifyDataSetChanged();
+    }
+
     public class Viewholder extends RecyclerView.ViewHolder {
         TextView mTitle,mContent;
         public Viewholder(@NonNull View itemView) {

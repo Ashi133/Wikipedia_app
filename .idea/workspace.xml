@@ -31,7 +31,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03906ee5-c0b4-4a81-ab9b-ebf32c23bb28" name="Default Changelist" comment="Wikipedia-0.0.6">
+    <list default="true" id="03906ee5-c0b4-4a81-ab9b-ebf32c23bb28" name="Default Changelist" comment="Wikipedia-0.0.7">
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/fileHashes/fileHashes.bin" afterDir="false" />
@@ -40,11 +40,10 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.0.2/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/ArticlesAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/ArticlesAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/FeaturedImageAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Adapter/FeaturedImageAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/Articles.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/Articles.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/FeaturedImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Fragments/FeaturedImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Holder/Holder.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/android/wikipedia/Holder/Holder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +250,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651853153384</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Wikipedia-0.0.7">
+      <created>1651896515452</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651896515454</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -278,6 +284,7 @@
     <MESSAGE value="Wikipedia-0.0.4" />
     <MESSAGE value="Wikipedia-0.0.5" />
     <MESSAGE value="Wikipedia-0.0.6" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wikipedia-0.0.6" />
+    <MESSAGE value="Wikipedia-0.0.7" />
+    <option name="LAST_COMMIT_MESSAGE" value="Wikipedia-0.0.7" />
   </component>
 </project>

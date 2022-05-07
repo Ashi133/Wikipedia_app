@@ -52,6 +52,11 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
         return arrayList.size();
     }
 
+    public void update(ArrayList<Holder> temp) {
+        arrayList=temp;
+        notifyDataSetChanged();
+    }
+
     public class viewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView mTitle;

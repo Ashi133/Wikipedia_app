@@ -58,7 +58,6 @@ public class Articles extends Fragment {
         loadArticle();
         refreshLayout.setOnRefreshListener(this::loadArticle);
         //String categoryListUrl="https://en.wikipedia.org/w/api.php?action=query&list=allcategories&acprefix=List%20of&formatversion=2";
-
         return view;
     }
 
@@ -68,60 +67,50 @@ public class Articles extends Fragment {
         //loading of article logic goes here.
         String articleUrl="https://en.wikipedia.org/w/api.php?format=json&action=query&generator=random&grnnamespace=0&prop=revisions|images&rvprop=content&grnlimit=10";
         fetchdata(articleUrl);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        refreshLayout.setRefreshing(false);
         new Handler().postDelayed(() -> recyclerView.hideShimmerAdapter(), 1500);
+        refreshLayout.setRefreshing(true);
     }
 
     private void fetchdata(String url) {
         arrayList.clear();
         RequestQueue requestQueue;
         requestQueue= Volley.newRequestQueue(requireActivity());
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, url,new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Log.d("Response result=", String.valueOf(response));
-                JSONObject jsonObject;
-                try {
-                    jsonObject = new JSONObject(response);
-                    JSONObject object=jsonObject.getJSONObject("query").getJSONObject("pages");
-                    JSONArray array=object.names();
-                    JSONObject object1=object.getJSONObject(array.get(0).toString());
+        @SuppressLint ("NotifyDataSetChanged") StringRequest stringRequest=new StringRequest(Request.Method.GET, url, response -> {
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(response);
+                JSONObject object=jsonObject.getJSONObject("query").getJSONObject("pages");
+                JSONArray array=object.names();
+                for (int i = 0; i< Objects.requireNonNull(array).length(); i++){
+                    JSONObject object1=object.getJSONObject(array.get(i).toString());
                     String title=object1.getString("title");
-                    //Log.d("Response result=", String.valueOf(object1));
-                    Toast.makeText(requireActivity(), "Title="+title, Toast.LENGTH_LONG).show();
-
-
-
-                    //String content=object1.getString("*");
-                    //Toast.makeText(requireActivity(), "Content="+content, Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    JSONArray jsonArray=object1.getJSONArray("revisions");
+                    JSONObject jsonObject1= (JSONObject) jsonArray.get(0);
+                    String content=jsonObject1.getString("*");
+                    Holder holder=new Holder(title,content);
+                    arrayList.add(holder);
                 }
+                adapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
+            } catch (JSONException e) {
+                refreshLayout.setRefreshing(false);
+                e.printStackTrace();
             }
-        },new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error){
-                error.printStackTrace();
-            }
-        });
+        }, error -> Toast.makeText(requireActivity(), "Article fragment:Volley error="+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show());
         requestQueue.add(stringRequest);
     }
 
     public  void search(String text){
-
+        ArrayList<Holder> temp=new ArrayList<>();
+        if (text.length()>0){
+            for (Holder holder:arrayList){
+                if (holder.getTitle().toLowerCase().contains(text.toLowerCase())){
+                    temp.add(holder);
+                }
+            }
+        }else {
+            temp.addAll(arrayList);
+        }
+        adapter.update(temp);
     }
 }
