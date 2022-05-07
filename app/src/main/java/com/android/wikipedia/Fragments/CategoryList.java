@@ -39,13 +39,13 @@ public class CategoryList extends Fragment {
         // Inflate the layout for this fragment
         View v;
         v = layoutInflater.inflate(R.layout.category_list_fragment, viewGroup, false);
-        recyclerView=v.findViewById(R.id.download_rv);
+        recyclerView=v.findViewById(R.id.categoryList_rv);
         refreshLayout=v.findViewById(R.id.swipeRefresh2);
         arrayList=new ArrayList<>();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         refreshLayout.setOnRefreshListener(() -> {
-            loadCategory();
+            loadData();
             refreshLayout.setRefreshing(false);
         });
         return v;
