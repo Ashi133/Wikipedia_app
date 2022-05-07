@@ -19,9 +19,6 @@ import com.android.wikipedia.Holder.Holder;
 import com.android.wikipedia.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 @SuppressWarnings ("ALL")
@@ -29,8 +26,6 @@ public class HomeScreen extends AppCompatActivity {
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
     BottomNavigationView navigationView;
-    ValueEventListener listener;
-    DatabaseReference reference;
     int count=0;
     ArrayList<Holder> arrayList;
 
