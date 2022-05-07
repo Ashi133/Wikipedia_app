@@ -2,16 +2,13 @@ package com.android.wikipedia.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Switch;
-
-import com.android.wikipedia.UpdateTheme;
+import com.android.wikipedia.*;
 import com.android.wikipedia.databinding.ActivitySettingBinding;
-
 public class setting extends AppCompatActivity {
 ActivitySettingBinding binding;
 @SuppressLint ("UseSwitchCompatOrMaterialCode")

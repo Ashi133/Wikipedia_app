@@ -14,9 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.wikipedia.Activities.preview;
-import com.android.wikipedia.Holder.Holder;
+import com.android.wikipedia.Holder.*;
 import com.android.wikipedia.R;
-import com.android.wikipedia.downloadFile;
+import com.android.wikipedia.*;
 
 import java.util.ArrayList;
 

@@ -15,12 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.wikipedia.Activities.preview;
-import com.android.wikipedia.Database.DatabaseManager;
-import com.android.wikipedia.Database.Entities;
-import com.android.wikipedia.Holder.Holder;
+import com.android.wikipedia.Database.*;
+import com.android.wikipedia.Holder.*;
 import com.android.wikipedia.R;
-import com.android.wikipedia.UpdateTheme;
-import com.android.wikipedia.downloadFile;
+import com.android.wikipedia.*;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
@@ -49,7 +47,7 @@ public class FeaturedImageAdapter extends RecyclerView.Adapter<FeaturedImageAdap
             holder.mTitle.setText(title);
             //loading an image from a server we use glide third party library.
             try{
-                Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia).override(680,680).into(holder.imageView);
+                Glide.with(context).load(url).centerCrop().placeholder(R.drawable.wikipedia1).override(680,680).into(holder.imageView);
             }catch (Exception e){
                 Log.e("Load error =",e.getLocalizedMessage());
             }

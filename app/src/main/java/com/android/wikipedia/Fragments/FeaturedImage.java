@@ -23,9 +23,9 @@ import com.android.wikipedia.Adapter.FeaturedImageAdapter;
 
 import com.android.wikipedia.Database.DatabaseManager;
 import com.android.wikipedia.Database.Entities;
-import com.android.wikipedia.Holder.Holder;
+import com.android.wikipedia.Holder.*;
 import com.android.wikipedia.R;
-import com.android.wikipedia.UpdateTheme;
+import com.android.wikipedia.*;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;

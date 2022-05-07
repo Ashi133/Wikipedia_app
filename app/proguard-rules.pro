@@ -19,5 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
 -keepclassmembers class com.android.wikipedia.Holder.**{*;}
 -keepclassmembers class com.android.wikipedia.Database.**{*;}

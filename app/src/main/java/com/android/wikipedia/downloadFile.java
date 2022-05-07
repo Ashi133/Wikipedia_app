@@ -37,7 +37,6 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     public static String path="";
     @SuppressLint ("StaticFieldLeak")
     private static NotificationManagerCompat compat;
-
     public static String download(String name,Context context,String url,String type){
         mContext=context;
         mName=name;
@@ -119,7 +118,7 @@ public class downloadFile implements ActivityCompat.OnRequestPermissionsResultCa
     }
     private static void popUpNotification(String fName) {
         NotificationCompat.Builder builder=new NotificationCompat.Builder(mContext, String.valueOf(123));
-        builder.setSmallIcon(R.drawable.wikipedia);
+        builder.setSmallIcon(R.drawable.wikipedia1);
         builder.setContentTitle("Downloading");
         builder.setContentText("Downloading file "+fName);
         builder.setAutoCancel(false);

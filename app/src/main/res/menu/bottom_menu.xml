@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Articles"
-        android:icon="@drawable/article"
+        android:icon="@drawable/article1"
         android:id="@+id/shared_item"
         tools:ignore="HardcodedText" />
     <item android:title="Featured Image"
-        android:icon="@drawable/png"
+        android:icon="@drawable/png1"
         android:id="@+id/received_item"
         tools:ignore="HardcodedText" />
     <item android:title="Category List"
-        android:icon="@drawable/list"
+        android:icon="@drawable/list1"
         android:id="@+id/downloaded_item"
         tools:ignore="HardcodedText" />
 </menu>

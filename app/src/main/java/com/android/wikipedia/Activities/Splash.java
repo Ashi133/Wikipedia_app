@@ -12,7 +12,6 @@ import com.android.wikipedia.*;
 import com.android.wikipedia.databinding.ActivitySplashBinding;
 
 import java.util.Objects;
-
 public class Splash extends AppCompatActivity {
     static final long Timer=2000;
     ActivitySplashBinding binding;

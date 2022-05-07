@@ -12,10 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.android.wikipedia.Adapter.*;
-import com.android.wikipedia.Fragments.CategoryList;
-import com.android.wikipedia.Fragments.FeaturedImage;
-import com.android.wikipedia.Fragments.Articles;
-import com.android.wikipedia.Holder.Holder;
+import com.android.wikipedia.Holder.*;
+import com.android.wikipedia.Fragments.*;
 import com.android.wikipedia.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;

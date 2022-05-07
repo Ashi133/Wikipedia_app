@@ -8,7 +8,6 @@ public class TypeWriter extends androidx.appcompat.widget.AppCompatTextView {
     private CharSequence mText;
     private int mIndex;
     private long mDelay = 150; // in ms
-
     public TypeWriter(Context context) {
         super(context);
     }

@@ -19,9 +19,9 @@ import com.android.volley.toolbox.Volley;
 import com.android.wikipedia.Adapter.ArticlesAdapter;
 import com.android.wikipedia.Database.DatabaseManager;
 import com.android.wikipedia.Database.Entities;
-import com.android.wikipedia.Holder.Holder;
+import com.android.wikipedia.Holder.*;
 import com.android.wikipedia.R;
-import com.android.wikipedia.UpdateTheme;
+import com.android.wikipedia.*;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.json.JSONArray;
@@ -30,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
 public class Articles extends Fragment {
     ArticlesAdapter adapter;
     ShimmerRecyclerView recyclerView;

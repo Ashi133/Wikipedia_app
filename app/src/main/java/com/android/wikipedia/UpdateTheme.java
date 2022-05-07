@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+
 public class UpdateTheme {
     public static String FOLDER="Theme";
     public static int getTheme(String key, Context context){

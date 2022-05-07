@@ -44,7 +44,6 @@ public class preview extends AppCompatActivity {
             }
         }
     }
-
     @RequiresApi (api = Build.VERSION_CODES.O)
     @SuppressLint ("SetJavaScriptEnabled")
     private void initializeWebView() {
@@ -57,7 +56,6 @@ public class preview extends AppCompatActivity {
         webView.getSettings().setSupportZoom(true);
         webView.setWebViewClient(new WebViewClient());
     }
-
     @Override
     public void onBackPressed() {
         if (binding.webView.canGoBack()){

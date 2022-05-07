@@ -23,7 +23,6 @@ String title,content,url,descriptionUrl,path;
         this.title = title;
         this.content = content;
     }
-
     public Holder() {
     }
 
